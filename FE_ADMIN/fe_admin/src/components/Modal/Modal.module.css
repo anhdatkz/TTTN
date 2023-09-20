@@ -1,0 +1,32 @@
+.product_img{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.validate{
+    color: red;
+    font-weight: 500;
+    font-size: 12px;
+}
+
+
+/* PRODUCT */
+.form-product{
+    display: flex;
+    /* align-items: center; */
+    justify-content: space-between;
+    gap: 50px;
+}
+
+.modal-body-item{
+    flex: calc((100% / 2) - 50px);
+}
+
+.modal-total{
+    font-weight: bold;
+}
+.order-item-img {
+    width: 100px;
+    height: 80px;
+}
