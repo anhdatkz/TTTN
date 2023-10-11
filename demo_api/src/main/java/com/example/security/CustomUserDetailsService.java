@@ -47,6 +47,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		}else if(user.getQuyen().getTenquyen().equalsIgnoreCase("ROLE_NV")){
 			authorities.add(new SimpleGrantedAuthority("ROLE_NV"));
+		}else if(user.getQuyen().getTenquyen().equalsIgnoreCase("ROLE_THUKHO")){
+			authorities.add(new SimpleGrantedAuthority("ROLE_THUKHO"));
 		}else {
 			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 		}

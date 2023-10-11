@@ -61,8 +61,9 @@ function Login() {
 
                     localStorage.setItem('isLogin', true)
                     // localStorage.setItem('username', data.name)
-                    // localStorage.setItem('role', data.authorities[0])
+                    localStorage.setItem('role', data.authorities[0])
                     localStorage.setItem('token', data.token)
+
                     setAccounts(data)
 
                     if (data.authorities[0] === "ROLE_ADMIN") {
@@ -82,6 +83,26 @@ function Login() {
                             })
 
                         navigate("/manager/brand")
+                        toast.success("Đăng nhập thành công", {
+                            position: "top-center"
+                        })
+                    } else if (data.authorities[0] === "ROLE_THUKHO") {
+                        fetch(`${apiConfigs.baseUrl}/nhanvien/profile`, {
+                            headers: {
+                                'Authorization': data.token
+                            },
+                        })
+                            .then((response) => {
+                                if (response.ok) {
+                                    return response.json()
+                                }
+                                throw Error(response.status)
+                            })
+                            .then((data) => {
+                                console.log(data.manv.trim())
+                            })
+
+                        navigate("/manager/product")
                         toast.success("Đăng nhập thành công", {
                             position: "top-center"
                         })

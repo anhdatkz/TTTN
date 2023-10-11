@@ -20,7 +20,7 @@ public class DatHang {
 	@Column(name="MADDH")
 	private String maddh;
 	private Date ngaylap;
-	private float tongtien;
+//	private float tongtien;
 	
 	@OneToMany(mappedBy="datHangCTDH")
 	@JsonIgnore
@@ -59,13 +59,13 @@ public class DatHang {
 		this.ngaylap = ngaylap;
 	}
 
-	public float getTongtien() {
-		return tongtien;
-	}
-
-	public void setTongtien(float tongtien) {
-		this.tongtien = tongtien;
-	}
+//	public float getTongtien() {
+//		return tongtien;
+//	}
+//
+//	public void setTongtien(float tongtien) {
+//		this.tongtien = tongtien;
+//	}
 
 	public List<CTDDH> getCtddhsDH() {
 		return ctddhsDH;

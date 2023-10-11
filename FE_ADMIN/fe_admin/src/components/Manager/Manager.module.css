@@ -162,7 +162,13 @@
     color: #f4291a;
 }
 
+.order-add,
 .order-edit:hover,
 .order-delete:hover{
     cursor: pointer;
+}
+.order-add {
+    font-size: 20px;
+    display: inline-block;
+    color: #00ff15;
 }
