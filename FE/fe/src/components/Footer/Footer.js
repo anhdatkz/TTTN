@@ -25,8 +25,8 @@ const Address = () => {
                     </div>
                     <div className='info__item'>
                         <FaEnvelope></FaEnvelope>
-                        <div>thietbididong@gmail.com</div>
-                        <div>didongtietkiem@gmail.com</div>
+                        <div>adstore@gmail.com</div>
+                        <div>contact.adstore@gmail.com</div>
                     </div>
                 </div>
             </div>
