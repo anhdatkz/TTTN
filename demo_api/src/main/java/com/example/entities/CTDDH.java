@@ -13,7 +13,7 @@ public class CTDDH {
 	@EmbeddedId
 	private CTDDHKeys id;
 	private Integer soluong;
-	private float tonggia;
+	private float dongia;
 	
 	@ManyToOne
 	@MapsId("maddhctdh")
@@ -46,12 +46,12 @@ public class CTDDH {
 		this.soluong = soluong;
 	}
 
-	public float getTonggia() {
-		return tonggia;
+	public float getDongia() {
+		return dongia;
 	}
 
-	public void setTonggia(float tonggia) {
-		this.tonggia = tonggia;
+	public void setDongia(float dongia) {
+		this.dongia = dongia;
 	}
 
 	public DatHang getDatHangCTDH() {

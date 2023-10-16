@@ -6,22 +6,20 @@ import * as Yup from "yup"
 import style from "./Modal.module.css"
 import { getDate, modalStyle } from "../../ultils/Format";
 import { scrollTop } from "../../App";
-import { manvLogin } from "../Login/Login";
 
-export default function ModalSupplier(props) {
-    const { hide, action, maloai } = props
+export default function ModalAdminOrder(props) {
+    const { hide, action, maddh } = props
+    const [lsp, setLSP] = useState([])
 
-    const [nhaccs, setNhaccs] = useState([])
-
-    let maddhRef = useRef("")
-    let nhaccRef = useRef("")
-
+    let maloaiRef = useRef("")
+    let soluongRef = useRef(0)
+    let dongiaRef = useRef(0)
     // lấy thông tin hãng
     useEffect(() => {
         fetch(`${apiConfig.baseUrl}/nhacc`)
             .then((res) => res.json())
             .then((data) => {
-                setNhaccs(data)
+                setLSP(data)
                 console.log(data)
             })
     }, [])
@@ -48,10 +46,10 @@ export default function ModalSupplier(props) {
     })
     const handleAdd = () => {
         const formData = {
-            maddh: maddhRef.current.value.trim(),
-            ngaylap: getDate(),
-            manvlap: manvLogin,
-            manhacc: nhaccRef.current.value.trim()
+            maddh: maddh,
+            maloai: maloaiRef.current.value.trim(),
+            soluong: soluongRef.current.value.trim(),
+            dongia: dongiaRef.current.value.trim()
         }
 
         fetch(`${apiConfig.baseUrl}/dathang`, {
@@ -86,9 +84,6 @@ export default function ModalSupplier(props) {
             });
     }
 
-    console.log("========================")
-    console.log(formik.values)
-
     return (
         <>
             <div className="modal show fade" style={modalStyle}>
@@ -100,23 +95,31 @@ export default function ModalSupplier(props) {
                         </div>
                         <div className="modal-body">
                             <div className="mb-3">
-                                <label>Mã DDH</label>
-                                <input ref={maddhRef} type="text" className="form-control" placeholder="Mã DDH"
-                                    name='maddh' onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur} />
-                                {formik.touched.mahang && formik.errors.mahang ? (
-                                    <div className={style["validate"]}>{formik.errors.mahang}</div>
-                                ) : null}
-                            </div>
-
-                            <div className="mb-3">
-                                <label>Nhà cung cấp</label>
-                                <select name="nhacc" id="nhacc" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={nhaccRef} >
-                                    {nhaccs.map((nhacc, index) => (
-                                        <option value={nhacc.manhacc} key={index}>{nhacc.tenncc}</option>
+                                <label>Tên sản phẩm</label>
+                                <select name="tensp" id="tensp" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={maloaiRef} >
+                                    {lsp.map((sp, index) => (
+                                        <option value={sp.manhacc} key={index}>{sp.tenncc}</option>
                                     ))}
                                 </select>
                             </div>
+                        </div>
+                        <div className="mb-3">
+                            <label>Số lượng</label>
+                            <input ref={soluongRef} type="number" className="form-control" placeholder="Số lượng"
+                                name='maddh' onChange={formik.handleChange}
+                                onBlur={formik.handleBlur} />
+                            {formik.touched.mahang && formik.errors.mahang ? (
+                                <div className={style["validate"]}>{formik.errors.mahang}</div>
+                            ) : null}
+                        </div>
+                        <div className="mb-3">
+                            <label>Đơn giá</label>
+                            <input ref={dongiaRef} type="number" className="form-control" placeholder="Đơn giá"
+                                name='maddh' onChange={formik.handleChange}
+                                onBlur={formik.handleBlur} />
+                            {formik.touched.mahang && formik.errors.mahang ? (
+                                <div className={style["validate"]}>{formik.errors.mahang}</div>
+                            ) : null}
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-primary" onClick={handleAdd}>Lưu</button>

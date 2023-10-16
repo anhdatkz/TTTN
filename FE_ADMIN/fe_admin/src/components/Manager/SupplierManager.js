@@ -27,7 +27,7 @@ export default function SupplierManager(params) {
                 setDatHangs(data)
                 console.log(data)
             })
-    }, [])
+    }, [modal])
 
     return (
         <>

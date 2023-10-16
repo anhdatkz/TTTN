@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entities.CTDH;
+import com.example.entities.CungCap;
+import com.example.entities.CungCapKeys;
 import com.example.entities.DonHang;
 import com.example.entities.Hang;
 import com.example.entities.LoaiSanPham;
@@ -40,6 +42,7 @@ import com.example.payload.LoaiSanPhamRequest;
 import com.example.payload.LoaiSanPhamResponse;
 import com.example.repository.LoaiSanPhamRepository;
 import com.example.service.CTDHService;
+import com.example.service.CungCapService;
 import com.example.service.DonHangService;
 import com.example.service.HangService;
 import com.example.service.LoaiSanPhamService;
@@ -70,6 +73,9 @@ public class LoaiSanPhamController {
 	
 	@Autowired
 	private DonHangService donHangService;
+
+	@Autowired
+	private CungCapService cungCapService;
 	
 //	@GetMapping("/loaisanpham")
 //	public List<LoaiSanPham> getAllLoaiSanPham(){
@@ -167,6 +173,17 @@ public class LoaiSanPhamController {
         }
         if(lspBestSale.size() > 8) return lspBestSale.subList(0, 7);
 		else return lspBestSale;
+	}
+	
+	@GetMapping("/lspnhacc/{manhacc}")
+	public List<LoaiSanPham> getAllLoaiSanPhamNhaCC(@PathVariable String manhacc){
+		List<CungCap> cungCaps = cungCapService.getCungCapByMaNhaCC(manhacc);
+		List<LoaiSanPham> lspNhaCC = new ArrayList<LoaiSanPham>();
+		for(CungCap cungCap : cungCaps){
+			LoaiSanPham lsp = loaiSanPhamRepository.getById(cungCap.getLoaiSanPhamCC().getMaloai());
+			lspNhaCC.add(lsp);
+		}
+		return lspNhaCC;
 	}
 	
 	@GetMapping("/lsp")

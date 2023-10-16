@@ -80,6 +80,7 @@ function Login() {
                             })
                             .then((data) => {
                                 console.log(data.manv.trim())
+                                manvLogin = data.manv.trim()
                             })
 
                         navigate("/manager/brand")
@@ -100,6 +101,7 @@ function Login() {
                             })
                             .then((data) => {
                                 console.log(data.manv.trim())
+                                manvLogin = data.manv.trim()
                             })
 
                         navigate("/manager/product")

@@ -29,4 +29,8 @@ public class DatHangService {
 	public void deleteDatHangById(String maddh){
 		datHangRepository.deleteById(maddh);
 	}
+	
+	public Boolean exitsByMaDDH(String maddh){
+		return datHangRepository.existsById(maddh);
+	}
 }

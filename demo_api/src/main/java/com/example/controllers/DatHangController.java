@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.entities.DatHang;
 import com.example.entities.NhaCC;
 import com.example.entities.NhanVien;
+import com.example.payload.ApiResponse;
 import com.example.payload.DatHangRequest;
 import com.example.service.DatHangService;
 import com.example.service.NhaCCService;
@@ -50,7 +52,12 @@ public class DatHangController {
 //	}
 	
 	@PostMapping("/dathang")
-	public DatHang saveDatHang(@RequestBody DatHangRequest datHangRequest){
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<ApiResponse> saveDatHang(@RequestBody DatHangRequest datHangRequest){
+		if(datHangService.exitsByMaDDH(datHangRequest.getMaddh())){
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Mã DDH đã tồn tại!"),
+                    HttpStatus.OK);
+		}
 		DatHang datHang = new DatHang();
 		NhaCC nhaCC = nhaCCService.getNhaCCById(datHangRequest.getManhacc());
 		NhanVien nhanVienDH = nhanVienService.getNhanVienById(datHangRequest.getManvlap());
@@ -59,7 +66,7 @@ public class DatHangController {
 		datHang.setNhaCCDH(nhaCC);
 		datHang.setNhanVienDH(nhanVienDH);
 		this.datHangService.save(datHang);
-		return datHang;
+		return new ResponseEntity(new ApiResponse(true, "Thêm DDH mới thành công!"), HttpStatus.OK);
 	}
 	
 	@GetMapping("/dathang/{id}")
