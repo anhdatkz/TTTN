@@ -21,3 +21,8 @@ export const formatDate = (date) => {
     const formattedDate = `${day}/${month}/${year}`;
     return formattedDate
 }
+
+export let modalStyle = {
+    display: 'block',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)'
+}

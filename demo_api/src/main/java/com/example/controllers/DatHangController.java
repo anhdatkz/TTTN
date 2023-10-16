@@ -17,7 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entities.DatHang;
+import com.example.entities.NhaCC;
+import com.example.entities.NhanVien;
+import com.example.payload.DatHangRequest;
 import com.example.service.DatHangService;
+import com.example.service.NhaCCService;
+import com.example.service.NhanVienService;
 
 
 
@@ -28,14 +33,33 @@ public class DatHangController {
 	@Autowired
 	private DatHangService datHangService;
 	
+	@Autowired
+	private NhaCCService nhaCCService;
+	
+	@Autowired
+	private NhanVienService nhanVienService;
+	
 	@GetMapping("/dathang")
 	public List<DatHang> getAllDatHang(){
 		return this.datHangService.listAll();
 	}
 	
+//	@PostMapping("/dathang")
+//	public void saveDatHang(@RequestBody DatHang datHang){
+//		this.datHangService.save(datHang);
+//	}
+	
 	@PostMapping("/dathang")
-	public void saveDatHang(@RequestBody DatHang datHang){
+	public DatHang saveDatHang(@RequestBody DatHangRequest datHangRequest){
+		DatHang datHang = new DatHang();
+		NhaCC nhaCC = nhaCCService.getNhaCCById(datHangRequest.getManhacc());
+		NhanVien nhanVienDH = nhanVienService.getNhanVienById(datHangRequest.getManvlap());
+		datHang.setMaddh(datHangRequest.getMaddh());
+		datHang.setNgaylap(datHangRequest.getNgaylap());
+		datHang.setNhaCCDH(nhaCC);
+		datHang.setNhanVienDH(nhanVienDH);
 		this.datHangService.save(datHang);
+		return datHang;
 	}
 	
 	@GetMapping("/dathang/{id}")
