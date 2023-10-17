@@ -9,6 +9,7 @@ import * as Yup from "yup"
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export let manvLogin = ""
+export let roleName = ""
 
 function Login() {
     const [username, setUserName] = useState("")
@@ -63,6 +64,7 @@ function Login() {
                     // localStorage.setItem('username', data.name)
                     localStorage.setItem('role', data.authorities[0])
                     localStorage.setItem('token', data.token)
+                    roleName = data.authorities[0].trim()
 
                     setAccounts(data)
 

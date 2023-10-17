@@ -6,6 +6,7 @@ import { FaPlusCircle } from "react-icons/fa"
 import ModalSupplier from "../Modal/ModalSupplier"
 import ModalAdminOrder from "../Modal/ModalAdminOrder"
 import ModalAdminOrderDetail from "../Modal/ModalAdminOrderDetail"
+import { roleName } from "../Login/Login"
 
 export default function SupplierManager(params) {
     const [datHangs, setDatHangs] = useState([])
@@ -13,6 +14,7 @@ export default function SupplierManager(params) {
     const [action, setAction] = useState("")
     const [manhacc, setMaNhaCC] = useState("")
     const [maddh, setMaDDH] = useState("")
+    console.log(roleName)
 
     const showModalAdd = () => {
         setAction("add")
@@ -52,7 +54,9 @@ export default function SupplierManager(params) {
                 <div className="employee">
                     <div className="employee-header d-flex justify-content-between">
                         <h2 className="title">Đặt hàng</h2>
-                        <button className="btn btn-primary" onClick={() => showModalAdd()}>Thêm</button>
+                        {roleName === "ROLE_THUKHO"
+                            ? <></>
+                            : <button className="btn btn-primary" onClick={() => showModalAdd()}>Thêm</button>}
                     </div>
                     <table className="table">
                         <thead>
@@ -75,7 +79,10 @@ export default function SupplierManager(params) {
                                         <button className="btn btn-primary" onClick={() => showModalDetail(dathang.maddh)}>Chi tiết</button>
                                     </td>
                                     <td>
-                                        <div className={style["order-add"]} onClick={() => showModalAddDetail(dathang.nhaCCDH.manhacc, dathang.maddh)}><FaPlusCircle></FaPlusCircle></div>
+                                        {roleName === "ROLE_THUKHO"
+                                            ? <></>
+                                            : <div className={style["order-add"]} onClick={() => showModalAddDetail(dathang.nhaCCDH.manhacc, dathang.maddh)}><FaPlusCircle></FaPlusCircle></div>}
+                                        {/* <div className={style["order-add"]} onClick={() => showModalAddDetail(dathang.nhaCCDH.manhacc, dathang.maddh)}><FaPlusCircle></FaPlusCircle></div> */}
                                     </td>
                                 </tr>
                             ))}

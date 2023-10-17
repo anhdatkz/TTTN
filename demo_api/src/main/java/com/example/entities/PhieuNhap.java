@@ -20,12 +20,24 @@ public class PhieuNhap {
 	@Column(name="MAPN")
 	private String mapn;
 	private Date ngaynhap;
-	private float tongtien;
+//	private float tongtien;
 	
 	@ManyToOne
 	@JoinColumn(name="maddh")
 	private DatHang datHangPN;
 	
+	@ManyToOne
+	@JoinColumn(name="manv")
+	private NhanVien nhanVienPN;
+	
+	public NhanVien getNhanVienPN() {
+		return nhanVienPN;
+	}
+
+	public void setNhanVienPN(NhanVien nhanVienPN) {
+		this.nhanVienPN = nhanVienPN;
+	}
+
 	@OneToMany(mappedBy="phieuNhapSP")
 	@JsonIgnore
 	private List<SanPham> sanPhamsPN;
@@ -51,13 +63,13 @@ public class PhieuNhap {
 		this.ngaynhap = ngaynhap;
 	}
 
-	public float getTongtien() {
-		return tongtien;
-	}
-
-	public void setTongtien(float tongtien) {
-		this.tongtien = tongtien;
-	}
+//	public float getTongtien() {
+//		return tongtien;
+//	}
+//
+//	public void setTongtien(float tongtien) {
+//		this.tongtien = tongtien;
+//	}
 
 	public DatHang getDatHangPN() {
 		return datHangPN;

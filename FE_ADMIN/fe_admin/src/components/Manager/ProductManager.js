@@ -6,6 +6,7 @@ import ModalProduct from "../Modal/ModalProduct"
 import { caculate, formatTien, VND } from "../../ultils/Format"
 import { toast } from "react-toastify"
 import ModalEditProduct from "../Modal/ModalEditProduct"
+import { roleName } from "../Login/Login"
 
 function ProductManager() {
     const [lsp, setlsp] = useState([])
@@ -99,7 +100,10 @@ function ProductManager() {
                                 <input className={style['search-input']} ref={searchRef} placeholder='Tìm kiếm sản phẩm...' />
                             </div>
                         </div>
-                        <button className="btn btn-primary" onClick={() => showModalAdd()}>Thêm</button>
+                        {roleName === "ROLE_THUKHO"
+                            ? <></>
+                            : <button className="btn btn-primary" onClick={() => showModalAdd()}>Thêm</button>}
+                        {/* <button className="btn btn-primary" onClick={() => showModalAdd()}>Thêm</button> */}
                     </div>
                     <table className="table">
                         <thead>
@@ -126,13 +130,17 @@ function ProductManager() {
                                     <td>{lsp.ctGiamGiaLSP[0]
                                         ? VND.format(caculate(lsp))
                                         : VND.format(lsp.gia)} </td>
-                                    <td className="">
+                                    {roleName === "ROLE_THUKHO"
+                                        ? <></>
+                                        : <>
+                                            <td className="">
                                         <div className={style["edit"]} onClick={() => showModalEdit(lsp.maloai)}><FaEdit /></div>
                                         {/* <div className={style["delete"]} onClick={() => showModalAdd()}><FaTrashAlt /></div>
-                                        <div className={style["detail-list"]} onClick={() => showModalAdd()}><FaList /></div> */}
-                                    </td>
+                                        <div className={style["detail-list"]} onClick={() => showModalAdd()}><FaList /></div> */}</td>
                                     <td><div className={style["delete"]} onClick={() => handleDelete(lsp.maloai)}><FaTrashAlt /></div></td>
                                     <td><div className={style["detail-list"]} onClick={() => showModalDetail(lsp.maloai)}><FaList /></div></td>
+                                        </>}
+
                                 </tr>
                             ))}
                         </tbody>

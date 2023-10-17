@@ -29,4 +29,8 @@ public class PhieuNhapService {
 	public void deletePhieuNhapById(String mapn){
 		phieuNhapRepository.deleteById(mapn);
 	}
+	
+	public Boolean exitsByMaPN(String mapn){
+		return phieuNhapRepository.existsById(mapn);
+	}
 }
