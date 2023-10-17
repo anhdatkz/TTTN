@@ -4,14 +4,31 @@ import apiConfig from "../../api/apiConfigs"
 import { formatDate } from "../../ultils/Format"
 import { FaPlusCircle } from "react-icons/fa"
 import ModalSupplier from "../Modal/ModalSupplier"
+import ModalAdminOrder from "../Modal/ModalAdminOrder"
+import ModalAdminOrderDetail from "../Modal/ModalAdminOrderDetail"
 
 export default function SupplierManager(params) {
     const [datHangs, setDatHangs] = useState([])
     const [modal, setModal] = useState(false)
     const [action, setAction] = useState("")
+    const [manhacc, setMaNhaCC] = useState("")
+    const [maddh, setMaDDH] = useState("")
 
     const showModalAdd = () => {
         setAction("add")
+        setModal(true)
+    }
+
+    const showModalDetail = (maddh) => {
+        setAction("detail")
+        setMaDDH(maddh)
+        setModal(true)
+    }
+
+    const showModalAddDetail = (manhacc, maddh) => {
+        setAction("add-detail")
+        setMaDDH(maddh)
+        setMaNhaCC(manhacc)
         setModal(true)
     }
 
@@ -55,10 +72,10 @@ export default function SupplierManager(params) {
                                     <td>{dathang.nhaCCDH.tenncc}</td>
                                     <td>{dathang.nhanVienDH.hoten}</td>
                                     <td className={style["order-action"]}>
-                                        <button className="btn btn-primary">Chi tiết</button>
+                                        <button className="btn btn-primary" onClick={() => showModalDetail(dathang.maddh)}>Chi tiết</button>
                                     </td>
                                     <td>
-                                        <div className={style["order-add"]}><FaPlusCircle></FaPlusCircle></div>
+                                        <div className={style["order-add"]} onClick={() => showModalAddDetail(dathang.nhaCCDH.manhacc, dathang.maddh)}><FaPlusCircle></FaPlusCircle></div>
                                     </td>
                                 </tr>
                             ))}
@@ -66,7 +83,15 @@ export default function SupplierManager(params) {
                     </table>
                 </div>
             </div>
-            {modal === true ? <ModalSupplier hide={closeModal} action={action} /> : <Fragment />}
+            {/* {modal === true ? <ModalSupplier hide={closeModal} action={action} /> : <Fragment />} */}
+            {modal === true
+                ? (action === "add"
+                    ? <ModalSupplier hide={closeModal} action={action} />
+                    : (action === "detail"
+                        ? <ModalAdminOrderDetail hide={closeModal} action={action} maddh={maddh}></ModalAdminOrderDetail>
+                        : <ModalAdminOrder hide={closeModal} action={action} manhacc={manhacc} maddh={maddh} />))
+                : <Fragment />
+            }
         </>
     )
 };

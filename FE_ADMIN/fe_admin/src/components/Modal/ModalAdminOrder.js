@@ -8,7 +8,7 @@ import { getDate, modalStyle } from "../../ultils/Format";
 import { scrollTop } from "../../App";
 
 export default function ModalAdminOrder(props) {
-    const { hide, action, maddh } = props
+    const { hide, action, maddh, manhacc } = props
     const [lsp, setLSP] = useState([])
 
     let maloaiRef = useRef("")
@@ -16,7 +16,7 @@ export default function ModalAdminOrder(props) {
     let dongiaRef = useRef(0)
     // lấy thông tin hãng
     useEffect(() => {
-        fetch(`${apiConfig.baseUrl}/nhacc`)
+        fetch(`${apiConfig.baseUrl}/lspnhacc/${manhacc}`)
             .then((res) => res.json())
             .then((data) => {
                 setLSP(data)
@@ -46,13 +46,13 @@ export default function ModalAdminOrder(props) {
     })
     const handleAdd = () => {
         const formData = {
-            maddh: maddh,
+            maddh: maddh.trim(),
             maloai: maloaiRef.current.value.trim(),
             soluong: soluongRef.current.value.trim(),
             dongia: dongiaRef.current.value.trim()
         }
 
-        fetch(`${apiConfig.baseUrl}/dathang`, {
+        fetch(`${apiConfig.baseUrl}/ctddh`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ export default function ModalAdminOrder(props) {
                 hide()
             })
             .catch((error) => {
-                toast.error("Tạo đơn đặt hàng thất bại", {
+                toast.error("Thất bại, Xin kiểm tra lại", {
                     position: "top-center"
                 })
                 console.error('Error:', error);
@@ -98,12 +98,11 @@ export default function ModalAdminOrder(props) {
                                 <label>Tên sản phẩm</label>
                                 <select name="tensp" id="tensp" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={maloaiRef} >
                                     {lsp.map((sp, index) => (
-                                        <option value={sp.manhacc} key={index}>{sp.tenncc}</option>
+                                        <option value={sp.maloai} key={index}>{sp.tenloai}</option>
                                     ))}
                                 </select>
                             </div>
-                        </div>
-                        <div className="mb-3">
+                            <div className="mb-3">
                             <label>Số lượng</label>
                             <input ref={soluongRef} type="number" className="form-control" placeholder="Số lượng"
                                 name='maddh' onChange={formik.handleChange}
@@ -123,6 +122,7 @@ export default function ModalAdminOrder(props) {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-primary" onClick={handleAdd}>Lưu</button>
+                        </div>
                         </div>
                     </div>
                 </div>
