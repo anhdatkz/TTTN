@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.configsJWT.JwtTokenProvider;
 import com.example.entities.TaiKhoan;
+import com.example.payload.MessageError;
 import com.example.repository.TaiKhoanRepository;
 
 @RestController
@@ -46,14 +47,16 @@ public class AuthController {
 				jsonObject.put("name", authentication.getName());
 				jsonObject.put("authorities", authentication.getAuthorities());
 				jsonObject.put("token", tokenProvider.createToken(matk, userRepository.findById(matk).get().getQuyen()));
+				jsonObject.put("message", MessageError.getMessageEror(MessageError.SUCCESS_LOGIN));
 				return new ResponseEntity<String>(jsonObject.toString(), HttpStatus.OK);
 			}
 		} catch (JSONException e) {
 			try {
-				jsonObject.put("exception", e.getMessage());
+				jsonObject.put("exception", MessageError.getMessageEror(MessageError.FAIL_LOGIN));
+				jsonObject.put("message", MessageError.getMessageEror(MessageError.FAIL_LOGIN));
 			} catch (JSONException e1) {
 				e1.printStackTrace();
-			}
+			}	
 			return new ResponseEntity<String>(jsonObject.toString(), HttpStatus.UNAUTHORIZED);
 		}
 		return null;

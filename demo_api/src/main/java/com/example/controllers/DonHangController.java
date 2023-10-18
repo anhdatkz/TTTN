@@ -34,6 +34,7 @@ import com.example.payload.DoanhThuThang;
 import com.example.payload.DonHangRequest;
 import com.example.payload.DonHangResponse;
 import com.example.payload.DonHangUpdateRequest;
+import com.example.payload.MessageError;
 import com.example.payload.TrangThaiRequest;
 import com.example.service.CTDHService;
 import com.example.service.DonHangService;
@@ -197,7 +198,7 @@ public class DonHangController {
 		}
 		donHang.setTrangThai(trangThai);
 		donhangService.save(donHang);
-		return new ResponseEntity(new ApiResponse(true, "Cập nhật trạng thái đơn hàng thành công!"), HttpStatus.OK);
+		return new ResponseEntity(new ApiResponse(true, MessageError.getMessageEror(MessageError.CHANGE_STATUS_SUCCESS)), HttpStatus.OK);
 	}
 	
 //	@PutMapping("/donhang")
