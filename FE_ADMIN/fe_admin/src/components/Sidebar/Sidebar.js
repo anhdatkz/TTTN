@@ -23,7 +23,7 @@ function Sidebar() {
                     <ul className="list-group">
                         <li className="list-group-item"><NavLink to="/manager/product">Loại sản phẩm</NavLink></li>
                         <li className="list-group-item"><NavLink to="/manager/supplier">Đặt hàng NCC</NavLink></li>
-                        <li className="list-group-item"><NavLink to="/manager/report">Phiếu nhập</NavLink></li>
+                        <li className="list-group-item"><NavLink to="/manager/received-note">Phiếu nhập</NavLink></li>
                         <li className="list-group-item" onClick={handleLogOut}><a className="logout">Đăng xuất</a></li>
                     </ul>
                 </div>

@@ -57,6 +57,7 @@ public class CTDDHController {
 			LoaiSanPham lsp = loaiSanPhamService.getLoaiSanPhamById(ctddh.getId().getMaloaictdh().trim());
 			CTDDHResponse ctddhResponse  = new CTDDHResponse();
 			ctddhResponse.setMaddh(ctddh.getId().getMaddhctdh());
+			ctddhResponse.setMaloai(lsp.getMaloai());
 			ctddhResponse.setTenloai(lsp.getTenloai());
 			ctddhResponse.setAnh(lsp.getAnh());
 			ctddhResponse.setSoluong(ctddh.getSoluong());

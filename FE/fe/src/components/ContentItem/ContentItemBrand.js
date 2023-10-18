@@ -194,16 +194,19 @@ function ContentItemBrand(props) {
                                         <button className='btn filter-item' onClick={() => handleFilterHighPrice(filter === "" ? loaiSP : lspFilter)}>Giá Cao - Thấp</button>
                                         <button className='btn filter-item' onClick={() => handleFilterLowPrice(filter === "" ? loaiSP : lspFilter)} >Giá Thấp - Cao</button>
                                         <select name="ram" id="ram" className="form-control filter-item" ref={ramRef} onChange={() => handleChangeRam(loaiSP, ramRef.current.value)}>
+                                            <option value="">RAM</option>
                                             {rams.map((ram) => (
                                                 <option value={ram.maram} key={ram.maram}>{ram.dungluong.trim()}</option>
                                             ))}
                                         </select>
                                         <select name="rom" id="rom" className="form-control filter-item" ref={romRef} onChange={() => handleChangeRom(loaiSP, romRef.current.value)}>
+                                            <option value="">ROM</option>
                                             {roms.map((rom) => (
                                                 <option value={rom.marom} key={rom.marom}>{rom.dungluong.trim()}</option>
                                             ))}
                                         </select>
                                         <select name="gias" id="gias" className="form-control filter-item" ref={giaRef} onChange={() => handleChangePrice(loaiSP, giaRef.current.value)}>
+                                            <option value={0}>Lọc theo giá</option>
                                             {gias.map((gia, index) => (
                                                 <option value={index} key={gia.gia}>{gia.mota.trim()}</option>
                                             ))}

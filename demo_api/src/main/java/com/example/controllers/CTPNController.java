@@ -89,7 +89,7 @@ public class CTPNController {
 			CTPNKeys.setMaloaictpn(CTPNRequest.getMaloai());
 			
 			if(ctpnService.exitsById(CTPNKeys)){
-				return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Sản phẩm đã tồn tại!"),
+				return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Sản phẩm đã được nhập!"),
 	                    HttpStatus.OK);
 			}
 			CTPN.setPhieuNhap(phieuNhap);;
@@ -97,7 +97,9 @@ public class CTPNController {
 			CTPN.setId(CTPNKeys);
 			CTPN.setSoluong(CTPNRequest.getSoluong());
 			CTPN.setDongia(CTPNRequest.getDongia());
+			loaiSanPham.setSoluongton(loaiSanPham.getSoluongton() + CTPNRequest.getSoluong());
 			this.ctpnService.save(CTPN);
+			loaiSanPhamService.save(loaiSanPham);
 			return new ResponseEntity(new ApiResponse(true, "Nhập hàng thành công"), HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO: handle exception

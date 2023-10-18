@@ -2,6 +2,7 @@ package com.example.payload;
 
 public class CTDDHResponse {
 	String maddh;
+	String maloai;
 	String tenloai;
 	String anh;
 	Integer soluong;
@@ -12,6 +13,12 @@ public class CTDDHResponse {
 	}
 	public void setMaddh(String maddh) {
 		this.maddh = maddh;
+	}
+	public String getMaloai() {
+		return maloai;
+	}
+	public void setMaloai(String maloai) {
+		this.maloai = maloai;
 	}
 	public String getTenloai() {
 		return tenloai;
