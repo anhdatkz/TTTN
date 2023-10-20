@@ -75,5 +75,4 @@ public class PhieuNhap {
 		this.sanPhamsPN = sanPhamsPN;
 	}
 	
-	
 }
