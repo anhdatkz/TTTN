@@ -201,6 +201,14 @@ public class DonHangController {
 		return new ResponseEntity(new ApiResponse(true, MessageError.getMessageEror(MessageError.CHANGE_STATUS_SUCCESS)), HttpStatus.OK);
 	}
 	
+//	@PutMapping("/donhang")
+//	public ResponseEntity<ApiResponse> updateTrangThaiDH(@RequestBody Integer madh){
+//		DonHang donHang = donhangService.getDonHangById(madh);
+//		TrangThai trangThai = trangThaiSerVice.getTrangThaiById(3);
+//		donHang.setTrangThai(trangThai);
+//		donhangService.save(donHang);
+//		return new ResponseEntity(new ApiResponse(true, "Cập nhật trạng thái đơn hàng thành công!"), HttpStatus.OK);
+//	}
 	
 	@PutMapping("/donhang/{id}")
 	public ResponseEntity<DonHangResponse> updatedonhang(@RequestBody DonHangUpdateRequest donHangUpdateRequest,
