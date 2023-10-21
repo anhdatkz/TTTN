@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.entities.Hang;
 import com.example.entities.LoaiSanPham;
 import com.example.payload.ApiResponse;
+import com.example.payload.MessageError;
 import com.example.service.HangService;
 
 @CrossOrigin(origins ="http://localhost:3000")
@@ -38,11 +39,11 @@ public class HangController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<ApiResponse> saveHang(@RequestBody Hang hang){
 		if(hangService.exitsByMaHang(hang.getMahang())){
-			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Mã hãng đã tồn tại!"),
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, MessageError.getMessageEror(MessageError.EXIST_INFORMATION)),
                     HttpStatus.OK);
 		}
 		this.hangService.save(hang);
-		return new ResponseEntity(new ApiResponse(true, "Thêm hãng mới thành công!"), HttpStatus.OK);
+		return new ResponseEntity(new ApiResponse(true, MessageError.getMessageEror(MessageError.OPERATION_SUCCESS)), HttpStatus.OK);
 	}
 	
 	@GetMapping("/hang/{id}")

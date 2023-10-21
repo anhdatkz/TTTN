@@ -23,6 +23,7 @@ import com.example.entities.LoaiSanPham;
 import com.example.payload.ApiResponse;
 import com.example.payload.DanhGiaRequest;
 import com.example.payload.DanhGiaResponse;
+import com.example.payload.MessageError;
 import com.example.service.CTDHService;
 import com.example.service.DanhGiaService;
 import com.example.service.DonHangService;
@@ -112,14 +113,14 @@ public class DanhGiaController {
 		}
 		
 		if(check == false){
-			return new ResponseEntity(new ApiResponse(false, "Bạn chưa mua sản phẩm này!"), HttpStatus.OK);
+			return new ResponseEntity(new ApiResponse(false, MessageError.getMessageEror(MessageError.VALIDATE_RATE_PRODUCT)), HttpStatus.OK);
 		}
 		
 		//save danh gia
 		danhGiaKeys.setCmnddg(danhGiaRequest.getCmnd());
 		danhGiaKeys.setMaloaidg(danhGiaRequest.getMaloai());
 		if(danhGiaService.existByID(danhGiaKeys)){
-			return new ResponseEntity(new ApiResponse(false, "Bạn đã đánh giá sản phẩm trước đó!"), HttpStatus.OK);
+			return new ResponseEntity(new ApiResponse(false, MessageError.getMessageEror(MessageError.VALIDATE_DOUBLE_RATE)), HttpStatus.OK);
 		}
 		danhGia.setId(danhGiaKeys);
 		danhGia.setKhachHangDG(khachHang);
@@ -127,6 +128,6 @@ public class DanhGiaController {
 		danhGia.setMota(danhGiaRequest.getMota());
 		danhGia.setNgaybinhluan(danhGiaRequest.getNgaybinhluan());
 		danhGiaService.save(danhGia);
-		return new ResponseEntity(new ApiResponse(true, "Đánh giá thành công!"), HttpStatus.OK);
+		return new ResponseEntity(new ApiResponse(true, MessageError.getMessageEror(MessageError.RATE_SUCCESS)), HttpStatus.OK);
 	}
 }

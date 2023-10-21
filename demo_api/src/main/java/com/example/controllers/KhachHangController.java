@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.entities.GioHang;
 import com.example.entities.KhachHang;
 import com.example.payload.ApiResponse;
+import com.example.payload.MessageError;
 import com.example.service.GioHangService;
 import com.example.service.KhachHangService;
 import com.example.service.TaiKhoanService;
@@ -62,18 +63,18 @@ public class KhachHangController {
 	@PostMapping("/khachhang")
 	public ResponseEntity<ApiResponse> saveKhachHang(@RequestBody KhachHang khachHang){
 		if(taiKhoanService.exitsByMaTK(khachHang.getTaiKhoanKH().getMatk())){
-			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Username đã được sử dụng!"),
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, MessageError.getMessageEror(MessageError.EXIST_INFORMATION)),
                     HttpStatus.OK);
 		}
 		if(khachHangService.existByCMND(khachHang.getCmnd())){
-			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "CMND bị trùng!"),
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, MessageError.getMessageEror(MessageError.EXIST_INFORMATION)),
                     HttpStatus.OK);
 		}
 		//khachHangService.save(khachHang);
 		GioHang gioHang = new GioHang();
 		gioHang.setKhachHangGH(khachHang);
 		GioHangService.save(gioHang);
-		return new ResponseEntity(new ApiResponse(true, "Tạo người dùng thành công!"), HttpStatus.OK);
+		return new ResponseEntity(new ApiResponse(true, MessageError.getMessageEror(MessageError.OPERATION_SUCCESS)), HttpStatus.OK);
 	}
 	
 	@GetMapping("/khachhang/{id}")

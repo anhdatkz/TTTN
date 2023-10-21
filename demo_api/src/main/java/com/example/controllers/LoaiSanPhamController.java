@@ -38,6 +38,7 @@ import com.example.entities.Rom;
 import com.example.payload.ApiResponse;
 import com.example.payload.LoaiSanPhamRequest;
 import com.example.payload.LoaiSanPhamResponse;
+import com.example.payload.MessageError;
 import com.example.repository.LoaiSanPhamRepository;
 import com.example.service.CTDHService;
 import com.example.service.DonHangService;
@@ -203,7 +204,7 @@ public class LoaiSanPhamController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ResponseEntity<ApiResponse> saveLoaiSanPham(@RequestBody LoaiSanPhamRequest loaiSanPham){
 		if(loaiSanPhamService.existsByMaLoai(loaiSanPham.getMaloai())){
-			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Mã sản phẩm đã tồn tại!"),
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, MessageError.getMessageEror(MessageError.EXIST_INFORMATION)),
                     HttpStatus.OK);
 		}
 		LoaiSanPham lspNew = new LoaiSanPham();
@@ -226,7 +227,7 @@ public class LoaiSanPhamController {
 		lspNew.setRamat(loaiSanPham.getRamat());
 		lspNew.setGia(loaiSanPham.getGia());
 		this.loaiSanPhamService.save(lspNew);
-		return new ResponseEntity(new ApiResponse(true, "Thêm sản phẩm thành công!"), HttpStatus.OK);
+		return new ResponseEntity(new ApiResponse(true,MessageError.getMessageEror(MessageError.OPERATION_SUCCESS)), HttpStatus.OK);
 	}
 	
 //	@GetMapping("/loaisanpham/{id}")
@@ -291,10 +292,10 @@ public class LoaiSanPhamController {
 			loaiSP.setHang(hang);
 			loaiSP.setRamat(loaiSanPham.getRamat());
 			loaiSanPhamService.save(loaiSP);
-			return new ResponseEntity<ApiResponse>(new ApiResponse(true, "Chỉnh sửa sản phẩm thành công!"), HttpStatus.OK);
+			return new ResponseEntity<ApiResponse>(new ApiResponse(true, MessageError.getMessageEror(MessageError.EXIST_INFORMATION)), HttpStatus.OK);
 		} catch (NoSuchElementException e) {
 			// TODO: handle exception
-			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Chỉnh sửa sản phẩm thất bại!"),
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, MessageError.getMessageEror(MessageError.OPERATION_FAIL)),
                     HttpStatus.OK);
 		}
 	}

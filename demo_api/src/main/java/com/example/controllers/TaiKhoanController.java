@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 //import com.example.configsJWT.JwtTokenProvider;
 import com.example.entities.TaiKhoan;
 import com.example.payload.ApiResponse;
+import com.example.payload.MessageError;
 import com.example.repository.TaiKhoanRepository;
 import com.example.service.TaiKhoanService;
 
@@ -54,11 +55,11 @@ public class TaiKhoanController {
 	@PostMapping("/taikhoan")
 	public ResponseEntity<ApiResponse> saveTaiKhoan(@RequestBody TaiKhoan taiKhoan){
 		if(taiKhooanService.exitsByMaTK(taiKhoan.getMatk())){
-			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Username đã được sử dụng!"),
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, MessageError.getMessageEror(MessageError.USERNAME_EXIST_ERROR)),
                     HttpStatus.BAD_REQUEST);
 		}
 		this.taiKhooanService.save(taiKhoan);
-		return new ResponseEntity(new ApiResponse(true, "Tạo tài khoản thành công!"), HttpStatus.OK);
+		return new ResponseEntity(new ApiResponse(true, MessageError.getMessageEror(MessageError.OPERATION_SUCCESS)), HttpStatus.OK);
 	}
 	
 	@GetMapping("/taikhoan/{id}")

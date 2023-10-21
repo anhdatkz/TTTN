@@ -1,7 +1,0 @@
-package com.example.payload;
-
-public class MessageError {
-	enum Error{
-		JOB_NAME_INPUT_ERROR
-	}
-}
