@@ -114,7 +114,7 @@ export default function ModalAdminReceivedNote(props) {
                             <div className="mb-3">
                                 <label>Tên sản phẩm</label>
                                 <select name="tensp" id="tensp" className="form-control" onChange={() => handleChangeCTDDH(maloaiRef.current.value.trim())} onBlur={formik.handleBlur} ref={maloaiRef} >
-                                    <option value="">Loại sản phẩm</option>
+                                    <option>Loại sản phẩm</option>
                                     {ctddhs.map((ctddh, index) => (
                                         <option value={ctddh.maloai} key={index}>{ctddh.tenloai}</option>
                                     ))}
@@ -122,7 +122,7 @@ export default function ModalAdminReceivedNote(props) {
                             </div>
                             <div className="mb-3">
                                 <label>Số lượng</label>
-                                <input ref={soluongRef} type="number" className="form-control" placeholder="Số lượng" value={soluong}
+                                <input ref={soluongRef} type="number" className="form-control" placeholder="Số lượng" value={soluong} readOnly
                                     name='maddh' onChange={formik.handleChange}
                                     onBlur={formik.handleBlur} />
                                 {formik.touched.mahang && formik.errors.mahang ? (
@@ -131,7 +131,7 @@ export default function ModalAdminReceivedNote(props) {
                             </div>
                             <div className="mb-3">
                                 <label>Đơn giá</label>
-                                <input ref={dongiaRef} type="number" className="form-control" placeholder="Đơn giá" value={dongia}
+                                <input ref={dongiaRef} type="number" className="form-control" placeholder="Đơn giá" value={dongia} readOnly
                                     name='maddh' onChange={formik.handleChange}
                                     onBlur={formik.handleBlur} />
                                 {formik.touched.mahang && formik.errors.mahang ? (

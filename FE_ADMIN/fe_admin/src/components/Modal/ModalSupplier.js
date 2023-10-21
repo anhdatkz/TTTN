@@ -36,7 +36,7 @@ export default function ModalSupplier(props) {
         },
         validationSchema: Yup.object({
             maddh: Yup.string()
-                .required("Mã loại không được rỗng!"),
+                .required("Mã đơn đặt hàng không được rỗng!"),
         }),
         onSubmit: (values) => {
             console.log("SUBMIT")
@@ -54,36 +54,42 @@ export default function ModalSupplier(props) {
             manhacc: nhaccRef.current.value.trim()
         }
 
-        fetch(`${apiConfig.baseUrl}/dathang`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem("token")
-            },
-            body: JSON.stringify(formData),
-        })
-            .then((response) => (response.json()))
-            .then((data) => {
-                console.log(data);
-                if (data.success === true) {
-                    toast.success(data.message, {
-                        position: "top-center"
-                    })
-                }
-                else {
-                    toast.warn(data.message, {
-                        position: "top-center"
-                    })
-                }
-                hide()
+        if (maddhRef.current.value.trim() === "") {
+            toast.error("Vui lòng nhập mã đơn đặt hàng!", {
+                position: "top-center"
             })
-            .catch((error) => {
-                toast.error("Tạo đơn đặt hàng thất bại", {
-                    position: "top-center"
+        } else {
+            fetch(`${apiConfig.baseUrl}/dathang`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem("token")
+                },
+                body: JSON.stringify(formData),
+            })
+                .then((response) => (response.json()))
+                .then((data) => {
+                    console.log(data);
+                    if (data.success === true) {
+                        toast.success(data.message, {
+                            position: "top-center"
+                        })
+                    }
+                    else {
+                        toast.warn(data.message, {
+                            position: "top-center"
+                        })
+                    }
+                    hide()
                 })
-                console.error('Error:', error);
-                hide()
-            });
+                .catch((error) => {
+                    toast.error("Tạo đơn đặt hàng thất bại", {
+                        position: "top-center"
+                    })
+                    console.error('Error:', error);
+                    hide()
+                });
+        }
     }
 
     console.log("========================")
@@ -104,8 +110,8 @@ export default function ModalSupplier(props) {
                                 <input ref={maddhRef} type="text" className="form-control" placeholder="Mã DDH"
                                     name='maddh' onChange={formik.handleChange}
                                     onBlur={formik.handleBlur} />
-                                {formik.touched.mahang && formik.errors.mahang ? (
-                                    <div className={style["validate"]}>{formik.errors.mahang}</div>
+                                {formik.touched.maddh && formik.errors.maddh ? (
+                                    <div className={style["validate"]}>{formik.errors.maddh}</div>
                                 ) : null}
                             </div>
 

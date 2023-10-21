@@ -54,36 +54,44 @@ export default function ModalReceivedNote(props) {
             manvnhap: manvLogin,
         }
 
-        fetch(`${apiConfig.baseUrl}/phieunhap`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem("token")
-            },
-            body: JSON.stringify(formData),
-        })
-            .then((response) => (response.json()))
-            .then((data) => {
-                console.log(data);
-                if (data.success === true) {
-                    toast.success(data.message, {
-                        position: "top-center"
-                    })
-                }
-                else {
-                    toast.warn(data.message, {
-                        position: "top-center"
-                    })
-                }
-                hide()
+        if (mapnRef.current.value.trim() === "") {
+            toast.error("Vui lòng nhập mã phiếu nhập!", {
+                position: "top-center"
             })
-            .catch((error) => {
-                toast.error("Tạo đơn đặt hàng thất bại", {
-                    position: "top-center"
+        } else {
+            fetch(`${apiConfig.baseUrl}/phieunhap`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem("token")
+                },
+                body: JSON.stringify(formData),
+            })
+                .then((response) => (response.json()))
+                .then((data) => {
+                    console.log(data);
+                    if (data.success === true) {
+                        toast.success(data.message, {
+                            position: "top-center"
+                        })
+                    }
+                    else {
+                        toast.warn(data.message, {
+                            position: "top-center"
+                        })
+                    }
+                    hide()
                 })
-                console.error('Error:', error);
-                hide()
-            });
+                .catch((error) => {
+                    toast.error("Tạo đơn đặt hàng thất bại", {
+                        position: "top-center"
+                    })
+                    console.error('Error:', error);
+                    hide()
+                });
+        }
+
+
     }
 
     console.log("========================")
