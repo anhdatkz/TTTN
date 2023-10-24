@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react"
 import { useState } from "react"
 import { toast } from "react-toastify"
 import apiConfig from "../../api/apiConfigs"
-import { VND } from "../../ultils/Format"
+import { VND, getDate } from "../../ultils/Format"
 import style from "./Manager.module.css"
 
 function ReportManager() {
@@ -47,11 +47,11 @@ function ReportManager() {
                     <div className="report-content d-flex justify-content-between align-items-center mt-2">
                         <div>
                             <label className="fw-bold me-3">Từ</label>
-                            <input type="date" id="start" min="2018-03" defaultValue="2018-05" ref={ngaybdRef} />
+                            <input type="date" id="start" min="2018-03" max={getDate()} defaultValue="2018-05" ref={ngaybdRef} />
                         </div>
                         <div>
                             <label className="fw-bold me-3">Đến</label>
-                            <input type="date" id="end" ref={ngayktRef} />
+                            <input type="date" id="end" max={getDate()} ref={ngayktRef} />
                         </div>
                         <button className="btn btn-primary me-5" onClick={handleGetOrder}>Bắt đầu</button>
                     </div>

@@ -137,7 +137,7 @@ function ProductManager() {
                                         <div className={style["edit"]} onClick={() => showModalEdit(lsp.maloai)}><FaEdit /></div>
                                         {/* <div className={style["delete"]} onClick={() => showModalAdd()}><FaTrashAlt /></div>
                                         <div className={style["detail-list"]} onClick={() => showModalAdd()}><FaList /></div> */}</td>
-                                    <td><div className={style["delete"]} onClick={() => handleDelete(lsp.maloai)}><FaTrashAlt /></div></td>
+                                            {/* <td><div className={style["delete"]} onClick={() => handleDelete(lsp.maloai)}><FaTrashAlt /></div></td> */}
                                     <td><div className={style["detail-list"]} onClick={() => showModalDetail(lsp.maloai)}><FaList /></div></td>
                                         </>}
 
