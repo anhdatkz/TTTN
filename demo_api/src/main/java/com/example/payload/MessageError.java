@@ -51,7 +51,7 @@ public class MessageError {
         case MessageError.FAIL_LOGIN:
             return "Tên đăng nhập hoặc mật khẩu không chính xác nhé!";
         case MessageError.SUCCESS_LOGIN:
-            return "Đăng nhập thành công!";
+            return "Đăng nhập thành công !";
         case MessageError.PASS_STRING_LARGE:
             return "Độ dài mật khẩu vượt quá 20 ký tự!";
         case MessageError.PASS_STRING_NOT_ENOUGH:
