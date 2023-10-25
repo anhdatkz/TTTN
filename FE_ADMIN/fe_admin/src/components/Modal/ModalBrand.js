@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import apiConfigs from '../../api/apiConfigs'
 import { useFormik } from 'formik';
 import * as Yup from "yup"
+import { brandValidations } from '../../ultils/ValidationMessages';
 
 function ModalBrand(props) {
     const { hide, mahang, action } = props
@@ -35,11 +36,11 @@ function ModalBrand(props) {
         },
         validationSchema: Yup.object({
             mahang: Yup.string()
-                .required("Mã hãng không được rỗng!"),
+                .required(brandValidations.VALIDATION_BRAND_ID),
             anh: Yup.string()
-                .required("Link ảnh không được rỗng!"),
+                .required(brandValidations.VALIDATION_BRAND_IMG),
             tenhang: Yup.string()
-                .required("Tên hãng không được rỗng!"),
+                .required(brandValidations.VALIDATION_BRAND_NAME),
         }),
         onSubmit: (values) => {
 

@@ -6,12 +6,15 @@ import style from './Register.module.css'
 import { useFormik } from 'formik';
 import * as Yup from 'yup'
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { getDate } from '../../ultils/Format';
+import { registerValidations } from '../../ultils/ValidationMessages';
 
 function Register() {
     const [accountData, setAccountData] = useState({})
     let navigate = useNavigate()
     const phoneRegExp = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
     const usernameRegex = /^[a-zA-Z0-9]+$/
+    const numberRegex = /^\d+$/
     const [showPassword, setShowPassword] = useState(false);
 
     const toggleShowPassword = () => {
@@ -31,24 +34,24 @@ function Register() {
         },
         validationSchema: Yup.object({
             matk: Yup.string()
-                .max(20, "Tên đăng nhập không quá 20 ký tự")
-                .required("Tên đăng nhập không được rỗng!").matches(usernameRegex, "Username viết liền không dấu"),
+                .max(20, registerValidations.VALIDATION_USERNAME_E003)
+                .required(registerValidations.VALIDATION_USERNAME_E001).matches(usernameRegex, registerValidations.VALIDATION_USERNAME_E002),
             password: Yup.string()
-                .max(20, "Mật khẩu phải có ít hơn 20 ký tự")
-                .required("Mật khẩu không được rỗng!").matches(usernameRegex, "Mật khẩu viết liền không dấu"),
+                .max(20, registerValidations.VALIDATION_PASS_E002)
+                .required(registerValidations.VALIDATION_PASS_E001).matches(usernameRegex, registerValidations.VALIDATION_PASS_E003),
             cmnd: Yup.string()
-                .max(10, "CMND phải có ít hơn 10 ký tự")
-                .required("CMND không được rỗng!"),
+                // .max(10, "CMND phải có ít hơn 10 ký tự")
+                .required(registerValidations.VALIDATION_CMND_01).matches(numberRegex, registerValidations.VALIDATION_CMND_02),
             tenkh: Yup.string()
-                .required("Họ tên không được rỗng!"),
+                .required(registerValidations.VALIDATION_NAME),
             diachi: Yup.string()
-                .required("Địa chỉ không được rỗng!"),
+                .required(registerValidations.VALIDATION_ADDRESS),
             sdt: Yup.string()
-                .min(10, "Số điện thoại phải là 10 số")
-                .max(10, "Số điện thoại phải là 10 số")
-                .required("Số điện thoại không được rỗng!").matches(phoneRegExp, "Số điện thoại không đúng"),
-            email: Yup.string().email("Email không đúng định dạng!")
-                .required("Email không được rỗng!"),
+                .min(10, registerValidations.VALIDATION_PHONENUMBER_02)
+                .max(10, registerValidations.VALIDATION_PHONENUMBER_02)
+                .required(registerValidations.VALIDATION_PHONENUMBER_01).matches(phoneRegExp, registerValidations.VALIDATION_PHONENUMBER_03),
+            email: Yup.string().email(registerValidations.VALIDATION_EMAIL_01)
+                .required(registerValidations.VALIDATION_EMAIL_02),
         }),
         onSubmit: (values) => {
             const registerData = {
@@ -61,10 +64,10 @@ function Register() {
                 taiKhoanKH: {
                     matk: values.matk.trim(),
                     password: values.password.trim(),
-                    quyen: {
-                        maquyen: "KH",
-                        tenquyen: "ROLE_USER"
-                    }
+                    // quyen: {
+                    //     maquyen: "KH",
+                    //     tenquyen: "ROLE_USER"
+                    // }
                 }
             }
 
@@ -205,7 +208,7 @@ function Register() {
                             <label>Ngày sinh</label>
                             <input
                                 type="date" className="form-control" name='ngaysinh' onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
+                                onBlur={formik.handleBlur} max={getDate()}
                                 placeholder="Mật khẩu"
                             />
                         </div>

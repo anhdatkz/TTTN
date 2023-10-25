@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entities.GioHang;
 import com.example.entities.KhachHang;
+import com.example.entities.Quyen;
+import com.example.entities.TaiKhoan;
 import com.example.payload.ApiResponse;
 import com.example.service.GioHangService;
 import com.example.service.KhachHangService;
@@ -59,6 +61,23 @@ public class KhachHangController {
 		}
 	}
 	
+//	@PostMapping("/khachhang")
+//	public ResponseEntity<ApiResponse> saveKhachHang(@RequestBody KhachHang khachHang){
+//		if(taiKhoanService.exitsByMaTK(khachHang.getTaiKhoanKH().getMatk())){
+//			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Username đã được sử dụng!"),
+//                    HttpStatus.OK);
+//		}
+//		if(khachHangService.existByCMND(khachHang.getCmnd())){
+//			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "CMND bị trùng!"),
+//                    HttpStatus.OK);
+//		}
+//		//khachHangService.save(khachHang);
+//		GioHang gioHang = new GioHang();
+//		gioHang.setKhachHangGH(khachHang);
+//		GioHangService.save(gioHang);
+//		return new ResponseEntity(new ApiResponse(true, "Tạo người dùng thành công!"), HttpStatus.OK);
+//	}
+	
 	@PostMapping("/khachhang")
 	public ResponseEntity<ApiResponse> saveKhachHang(@RequestBody KhachHang khachHang){
 		if(taiKhoanService.exitsByMaTK(khachHang.getTaiKhoanKH().getMatk())){
@@ -69,7 +88,13 @@ public class KhachHangController {
 			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "CMND bị trùng!"),
                     HttpStatus.OK);
 		}
-		//khachHangService.save(khachHang);
+		Quyen quyen = new Quyen();
+		quyen.setMaquyen("KH");
+		TaiKhoan taiKhoanKH = new TaiKhoan();
+		taiKhoanKH.setMatk(khachHang.getTaiKhoanKH().getMatk());
+		taiKhoanKH.setPassword(khachHang.getTaiKhoanKH().getPassword());
+		taiKhoanKH.setQuyen(quyen);
+		khachHang.setTaiKhoanKH(taiKhoanKH);
 		GioHang gioHang = new GioHang();
 		gioHang.setKhachHangGH(khachHang);
 		GioHangService.save(gioHang);

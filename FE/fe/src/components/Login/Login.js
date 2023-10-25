@@ -11,6 +11,7 @@ import { loginData } from '../../ultils/LoginData';
 import { useDispatch } from 'react-redux';
 import { getCartItem } from '../../features/cartSlice';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { loginValidations } from '../../ultils/ValidationMessages';
 
 
 function Login() {
@@ -35,11 +36,11 @@ function Login() {
         },
         validationSchema: Yup.object({
             username: Yup.string()
-                .max(20, "Tên đăng nhập phải có ít hơn 20 ký tự")
-                .required("Tên đăng nhập không được rỗng!").matches(usernameRegex, "Username viết liền không dấu"),
+                .max(20, loginValidations.VALIDATION_USERNAME_E003)
+                .required(loginValidations.VALIDATION_USERNAME_E001).matches(usernameRegex, loginValidations.VALIDATION_USERNAME_E002),
             password: Yup.string()
-                .max(20, "Mật khẩu phải có ít hơn 20 ký tự")
-                .required("Mật khẩu không được rỗng!").matches(usernameRegex, "Mật khẩu viết liền không dấu"),
+                .max(20, loginValidations.VALIDATION_PASS_E002)
+                .required(loginValidations.VALIDATION_PASS_E001).matches(usernameRegex, loginValidations.VALIDATION_PASS_E003),
         }),
         onSubmit: (values) => {
             localStorage.setItem('isLogin', false)

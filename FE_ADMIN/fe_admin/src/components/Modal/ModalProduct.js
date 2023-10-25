@@ -144,24 +144,24 @@ function ModalProduct(props) {
         validationSchema: Yup.object({
             maloai: Yup.string()
                 .required("Mã loại không được rỗng!"),
-            // tenloai: Yup.string()
-            //     .required("Tên loại không được rỗng!"),
-            // chip: Yup.string()
-            //     .required("Chip không được rỗng!"),
-            // anh: Yup.string()
-            //     .required("Ảnh không được rỗng!"),
-            // mahdh: Yup.string()
-            //     .required("Hệ điều hành không được rỗng!"),
-            // pin: Yup.string()
-            //     .required("pin không được rỗng!"),
-            // manhinh: Yup.string()
-            //     .required("Màn hình không được rỗng!"),
-            // gia: Yup.string()
-            //     .required("Giá không được rỗng!"),
+            tenloai: Yup.string()
+                .required("Tên loại không được rỗng!"),
+            chip: Yup.string()
+                .required("Chip không được rỗng!"),
+            anh: Yup.string()
+                .required("Ảnh không được rỗng!"),
+            mahdh: Yup.string()
+                .required("Hệ điều hành không được rỗng!"),
+            pin: Yup.string()
+                .required("pin không được rỗng!"),
+            manhinh: Yup.string()
+                .required("Màn hình không được rỗng!"),
+            gia: Yup.string()
+                .required("Giá không được rỗng!"),
             // soluong: Yup.string()
             //     .required("Số lượng không được rỗng!"),
-            // thoigianbh: Yup.string()
-            //     .required("Số lượng không được rỗng!"),
+            thoigianbh: Yup.string()
+                .required("Số lượng không được rỗng!"),
         }),
         onSubmit: (values) => {
             console.log("SUBMIT")
@@ -334,7 +334,7 @@ function ModalProduct(props) {
                                     </div>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Số lượng</label>
-                                        <input name="soluongton" type="number" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={soluongtonRef} />
+                                        <input name="soluongton" type="number" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={soluongtonRef} value={0} readOnly />
                                     </div>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Thời gian bảo hành</label>
