@@ -1,5 +1,6 @@
 import "./Paypal.css"
 import "../Cart/Cart.css"
+import style from '../Register/Register.module.css'
 import { useEffect, useRef, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import apiConfig from '../../api/apiConfigs'
@@ -7,8 +8,12 @@ import { toast } from "react-toastify"
 import { useNavigate } from "react-router-dom"
 import { clearCart, getTotals } from "../../features/cartSlice"
 import { caculate, VND } from "../../ultils/Format"
+import { orderInfoValidations } from "../../ultils/ValidationMessages"
+import { useFormik } from "formik"
+import * as Yup from 'yup'
 
 function PayPal({ isCheckout }) {
+    const phoneRegExp = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
     const paypal = useRef();
     const cart = useSelector((state) => state.cart)
     const cartItems = cart.cartItems
@@ -30,6 +35,31 @@ function PayPal({ isCheckout }) {
     let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     let yyyy = today.getFullYear();
     today = yyyy + '-' + mm + '-' + dd;
+
+    const formik = useFormik({
+        enableReinitialize: true,
+        initialValues: {
+            tenkh: "",
+            diachi: "",
+            sdt: "",
+            email: ""
+        },
+        validationSchema: Yup.object({
+            tenkh: Yup.string()
+                .required(orderInfoValidations.VALIDATION_NAME),
+            diachi: Yup.string()
+                .required(orderInfoValidations.VALIDATION_ADDRESS),
+            sdt: Yup.string()
+                .min(10, orderInfoValidations.VALIDATION_PHONENUMBER_02)
+                .max(10, orderInfoValidations.VALIDATION_PHONENUMBER_02)
+                .required(orderInfoValidations.VALIDATION_PHONENUMBER_01).matches(phoneRegExp, orderInfoValidations.VALIDATION_PHONENUMBER_03),
+            email: Yup.string().email(orderInfoValidations.VALIDATION_EMAIL_01)
+                .required(orderInfoValidations.VALIDATION_EMAIL_02),
+        }),
+        onSubmit: (values) => {
+
+        }
+    })
 
     useEffect(() => {
         fetch(`${apiConfig.baseUrl}/khachhang/profile`, {
@@ -62,10 +92,10 @@ function PayPal({ isCheckout }) {
     const handleSaveCart = async () => {
         const cartData = {
             ngaylap: today,
-            tennguoinhan: tenkhRef.current.value,
-            diachinhan: diachiRef.current.value,
-            sdtnguoinhan: sdtRef.current.value,
-            eamilnguoinhan: emailRef.current.value,
+            tennguoinhan: tenkhRef.current.value.trim(),
+            diachinhan: diachiRef.current.value.trim(),
+            sdtnguoinhan: sdtRef.current.value.trim(),
+            eamilnguoinhan: emailRef.current.value.trim(),
             tongtien: localStorage.getItem("totalAmount"),
             matrangthai: 1,
             cmnd: userInfo.cmnd
@@ -204,7 +234,10 @@ function PayPal({ isCheckout }) {
                     <div className="customer-info">
                         <div className="delivery-address">
                             <h4>Địa chỉ nhận hàng</h4>
-                            <span>Họ tên</span><input type="text" className="form-control" defaultValue={userInfo.tenkh} ref={tenkhRef} />
+                            <span>Họ tên</span><input type="text" className="form-control" defaultValue={userInfo.tenkh} ref={tenkhRef} name="tenkh" />
+                            {formik.errors.tenkh ? (
+                                <div className={style["validate"]}>{formik.errors.tenkh}</div>
+                            ) : null}
                             <span>Địa chỉ</span><input type="text" className="address form-control" defaultValue={userInfo.diachi} ref={diachiRef} />
                             <span>Số điện thoại</span><input type="text" className="phone form-control" defaultValue={userInfo.sdt} ref={sdtRef} />
                             <span>Email</span><input type="email" className="email form-control" defaultValue={userInfo.email} ref={emailRef} />

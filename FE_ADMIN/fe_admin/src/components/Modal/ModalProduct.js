@@ -6,6 +6,7 @@ import { useFormik } from 'formik';
 import * as Yup from "yup"
 import style from "./Modal.module.css"
 import { scrollTop, username } from "../../App";
+import { getDate } from "../../ultils/Format";
 
 function ModalProduct(props) {
     const { hide, action, maloai } = props
@@ -226,14 +227,14 @@ function ModalProduct(props) {
                         position: "top-center"
                     })
                 }
-                hide()
+                // hide()
             })
             .catch((error) => {
                 toast.error("Thêm sản phẩm thất bại!", {
                     position: "top-center"
                 })
                 console.error('Error:', error);
-                hide()
+                // hide()
             });
     }
 
@@ -277,10 +278,16 @@ function ModalProduct(props) {
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Tên loại</label>
                                         <input name="tenloai" type="text" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={tenloaiRef} />
+                                        {formik.touched.tenloai && formik.errors.tenloai ? (
+                                            <div className={style["validate"]}>{formik.errors.tenloai}</div>
+                                        ) : null}
                                     </div>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Ảnh</label>
-                                        <input name="anh" type="text" className="form-control" ref={anhRef} />
+                                        <input name="anh" type="text" className="form-control" ref={anhRef} onBlur={formik.handleBlur} />
+                                        {formik.touched.anh && formik.errors.anh ? (
+                                            <div className={style["validate"]}>{formik.errors.anh}</div>
+                                        ) : null}
                                     </div>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Hãng</label>
@@ -293,6 +300,9 @@ function ModalProduct(props) {
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Pin</label>
                                         <input name="pin" type="text" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={pinRef} />
+                                        {formik.touched.pin && formik.errors.pin ? (
+                                            <div className={style["validate"]}>{formik.errors.pin}</div>
+                                        ) : null}
                                     </div>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Giá</label>
@@ -301,6 +311,9 @@ function ModalProduct(props) {
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Mô tả</label>
                                         <textarea name="mota" type="text" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={motaRef} />
+                                        {formik.touched.gia && formik.errors.gia ? (
+                                            <div className={style["validate"]}>{formik.errors.anh}</div>
+                                        ) : null}
                                     </div>
                                 </div>
                                 <div className={style["modal-body-item"]}>
@@ -342,7 +355,7 @@ function ModalProduct(props) {
                                     </div>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Ra mắt</label>
-                                        <input name="ramat" type="date" className="form-control" defaultValue="2017-01-01" onChange={formik.handleChange} onBlur={formik.handleBlur}
+                                        <input name="ramat" type="date" className="form-control" defaultValue="2017-01-01" max={getDate()} onChange={formik.handleChange} onBlur={formik.handleBlur}
                                             ref={ramatRef} />
                                     </div>
                                 </div>

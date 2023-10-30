@@ -178,14 +178,14 @@ function ModalEditProduct(props) {
                         position: "top-center"
                     })
                 }
-                hide()
+                // hide()
             })
             .catch((error) => {
                 toast.error("Chỉnh sửa sản phẩm thất bại!", {
                     position: "top-center"
                 })
                 console.error('Error:', error);
-                hide()
+                // hide()
             });
     }
 

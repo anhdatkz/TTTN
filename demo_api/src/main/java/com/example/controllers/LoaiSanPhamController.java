@@ -305,6 +305,7 @@ public class LoaiSanPhamController {
 			loaiSP.setManhinh(loaiSanPham.getManhinh());
 			loaiSP.setSoluongton(loaiSanPham.getSoluongton());
 			loaiSP.setThoigianbh(loaiSanPham.getThoigianbh());
+			loaiSP.setGia(loaiSanPham.getGia());
 			loaiSP.setHang(hang);
 			loaiSP.setRamat(loaiSanPham.getRamat());
 			loaiSanPhamService.save(loaiSP);

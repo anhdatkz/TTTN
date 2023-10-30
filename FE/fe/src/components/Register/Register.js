@@ -209,7 +209,7 @@ function Register() {
                             <input
                                 type="date" className="form-control" name='ngaysinh' onChange={formik.handleChange}
                                 onBlur={formik.handleBlur} max={getDate()}
-                                placeholder="Mật khẩu"
+                                placeholder="Ngày sinh"
                             />
                         </div>
                     </div>
