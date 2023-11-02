@@ -153,16 +153,18 @@ function ModalProduct(props) {
                 .required("Ảnh không được rỗng!"),
             mahdh: Yup.string()
                 .required("Hệ điều hành không được rỗng!"),
-            pin: Yup.string()
-                .required("pin không được rỗng!"),
+            pin: Yup.number()
+                .min(1, "Dung lượng pin lớn hơn 0")
+                .required("Pin không được rỗng!"),
             manhinh: Yup.string()
                 .required("Màn hình không được rỗng!"),
-            gia: Yup.string()
+            gia: Yup.number()
+                .min(1, "Giá phải lớn hơn 0")
                 .required("Giá không được rỗng!"),
             // soluong: Yup.string()
             //     .required("Số lượng không được rỗng!"),
             thoigianbh: Yup.string()
-                .required("Số lượng không được rỗng!"),
+                .required("Thời gian bảo hành không được rỗng!"),
         }),
         onSubmit: (values) => {
             console.log("SUBMIT")
@@ -174,7 +176,7 @@ function ModalProduct(props) {
                 chip: values.chip.trim(),
                 ram: parseInt(values.ram),
                 rom: parseInt(values.rom),
-                mahdh: values.mahdh.trim(),
+                hedieuhanh: values.mahdh.trim(),
                 pin: parseInt(values.pin),
                 manhinh: values.manhinh.trim(),
                 soluongton: parseInt(values.soluongton),
@@ -183,6 +185,38 @@ function ModalProduct(props) {
                 gia: parseInt(values.gia),
                 ramat: values.ramat
             }
+
+            fetch(`${apiConfig.baseUrl}/loaisanpham`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem("token")
+                },
+                body: JSON.stringify(formData),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    if (data.success === true) {
+                        toast.success(data.message, {
+                            position: "top-center"
+                        })
+                        hide()
+                    }
+                    else {
+                        toast.warn(data.message, {
+                            position: "top-center"
+                        })
+                    }
+                    // hide()
+                })
+                .catch((error) => {
+                    toast.error("Thêm sản phẩm thất bại!", {
+                        position: "top-center"
+                    })
+                    console.error('Error:', error);
+                    // hide()
+                });
 
             scrollTop()
         }
@@ -221,6 +255,7 @@ function ModalProduct(props) {
                     toast.success(data.message, {
                         position: "top-center"
                     })
+                    hide()
                 }
                 else {
                     toast.warn(data.message, {
@@ -265,7 +300,7 @@ function ModalProduct(props) {
                             <h5 className="modal-title">Loại sản phẩm</h5>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={hide}></button>
                         </div>
-                        <form action="" className="modal-body">
+                        <form action="" className="modal-body" onSubmit={formik.handleSubmit}>
                             <div className={style["form-product"]}>
                                 <div className={style["modal-body-item"]}>
                                     <div className={style["body-item"]}>
@@ -284,7 +319,7 @@ function ModalProduct(props) {
                                     </div>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Ảnh</label>
-                                        <input name="anh" type="text" className="form-control" ref={anhRef} onBlur={formik.handleBlur} />
+                                        <input name="anh" type="text" className="form-control" ref={anhRef} onBlur={formik.handleBlur} onChange={formik.handleChange} />
                                         {formik.touched.anh && formik.errors.anh ? (
                                             <div className={style["validate"]}>{formik.errors.anh}</div>
                                         ) : null}
@@ -299,7 +334,7 @@ function ModalProduct(props) {
                                     </div>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Pin</label>
-                                        <input name="pin" type="text" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={pinRef} />
+                                        <input name="pin" type="number" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={pinRef} />
                                         {formik.touched.pin && formik.errors.pin ? (
                                             <div className={style["validate"]}>{formik.errors.pin}</div>
                                         ) : null}
@@ -307,19 +342,22 @@ function ModalProduct(props) {
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Giá</label>
                                         <input name="gia" type="number" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={giaRef} />
+                                        {formik.touched.gia && formik.errors.gia ? (
+                                            <div className={style["validate"]}>{formik.errors.gia}</div>
+                                        ) : null}
                                     </div>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Mô tả</label>
                                         <textarea name="mota" type="text" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={motaRef} />
-                                        {formik.touched.gia && formik.errors.gia ? (
-                                            <div className={style["validate"]}>{formik.errors.anh}</div>
-                                        ) : null}
                                     </div>
                                 </div>
                                 <div className={style["modal-body-item"]}>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Chip</label>
                                         <input name="chip" type="text" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={chipRef} />
+                                        {formik.touched.chip && formik.errors.chip ? (
+                                            <div className={style["validate"]}>{formik.errors.chip}</div>
+                                        ) : null}
                                     </div>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Ram</label>
@@ -340,10 +378,16 @@ function ModalProduct(props) {
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Hệ điều hành</label>
                                         <input name="mahdh" type="text" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={mahdhRef} />
+                                        {formik.touched.mahdh && formik.errors.mahdh ? (
+                                            <div className={style["validate"]}>{formik.errors.mahdh}</div>
+                                        ) : null}
                                     </div>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Màn hình</label>
                                         <input name="manhinh" type="text" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={manhinhRef} />
+                                        {formik.touched.manhinh && formik.errors.manhinh ? (
+                                            <div className={style["validate"]}>{formik.errors.manhinh}</div>
+                                        ) : null}
                                     </div>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Số lượng</label>
@@ -361,7 +405,8 @@ function ModalProduct(props) {
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-primary" onClick={handleAddProduct} >Lưu</button>
+                                <button type="submit" className="btn btn-primary">Lưu</button>
+                                {/* <button type="button" className="btn btn-primary" onClick={handleAddProduct} >Lưu</button> */}
                             </div>
                         </form>
                     </div>

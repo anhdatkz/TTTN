@@ -8,6 +8,7 @@ import * as Yup from 'yup'
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { getDate } from '../../ultils/Format';
 import { registerValidations } from '../../ultils/ValidationMessages';
+import { registerMessages } from '../../ultils/ErrorMessages';
 
 function Register() {
     const [accountData, setAccountData] = useState({})
@@ -95,7 +96,7 @@ function Register() {
                         //     body: JSON.stringify(cartData),
                         // })
 
-                        toast.success("Tạo tài khoản thành công!", {
+                        toast.success(registerMessages.REGISTER_SUCCESS, {
                             position: "top-center"
                         })
                         navigate("/login")
@@ -107,7 +108,7 @@ function Register() {
                     }
                 })
                 .catch((error) => {
-                    toast.error("Đăng ký thất bại!", {
+                    toast.error(registerMessages.REGISTER_E001, {
                         position: "top-center"
                     })
                     console.error('Error:', error);
