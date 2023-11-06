@@ -208,9 +208,6 @@ function ModalEditProduct(props) {
                                         <label htmlFor="">Mã loại</label>
                                         <input name="maloai" type="text" className="form-control" onChange={formik.handleChange}
                                             onBlur={formik.handleBlur} ref={maloaiRef} defaultValue={lsp.maloai} readOnly />
-                                        {formik.touched.maloai && formik.errors.maloai ? (
-                                            <div className={style["validate"]}>{formik.errors.maloai}</div>
-                                        ) : null}
                                     </div>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Tên loại</label>
@@ -266,7 +263,7 @@ function ModalEditProduct(props) {
                                                 ))}
                                             </select>)
                                             : (<input name="ram" id="ram" className="form-control" onChange={formik.handleChange}
-                                                onBlur={formik.handleBlur} ref={ramRef} defaultValue={lsp.ram} />)}
+                                                onBlur={formik.handleBlur} ref={ramRef} defaultValue={lsp.ram} readOnly />)}
 
                                     </div>
                                     <div className={style["body-item"]}>
@@ -278,7 +275,7 @@ function ModalEditProduct(props) {
                                                 ))}
                                             </select>)
                                             : (<input name="rom" id="rom" className="form-control" onChange={formik.handleChange}
-                                                onBlur={formik.handleBlur} ref={romRef} defaultValue={lsp.rom} />)}
+                                                onBlur={formik.handleBlur} ref={romRef} defaultValue={lsp.rom} readOnly />)}
                                     </div>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Hệ điều hành</label>
@@ -302,8 +299,13 @@ function ModalEditProduct(props) {
                                     </div>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Ra mắt</label>
-                                        <input name="ramat" type="date" className="form-control" defaultValue={lsp.ramat} onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur} ref={ramatRef} />
+                                        {action === "edit"
+                                            ? (<input name="ramat" type="date" className="form-control" defaultValue={lsp.ramat} onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur} ref={ramatRef} readOnly />)
+                                            : (<input name="ramat" type="text" className="form-control" defaultValue={lsp.ramat} onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur} ref={ramatRef} readOnly />)}
+                                        {/* <input name="ramat" type="date" className="form-control" defaultValue={lsp.ramat} onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur} ref={ramatRef} /> */}
                                     </div>
                                 </div>
                             </div>

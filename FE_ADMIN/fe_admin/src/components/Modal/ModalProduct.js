@@ -326,7 +326,7 @@ function ModalProduct(props) {
                                     </div>
                                     <div className={style["body-item"]}>
                                         <label htmlFor="">Hãng</label>
-                                        <select name="hang" id="hang" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={mahangRef} >
+                                        <select name="mahang" id="hang" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={mahangRef} >
                                             {hangs.map((hang, index) => (
                                                 <option value={hang.mahang} key={index}>{hang.tenhang}</option>
                                             ))}

@@ -61,7 +61,7 @@ public class NhanVienController {
 		List<NhanVien> nhanViens = nhanVienService.listAll();
 		List<NhanVienPhanCongResponse> nhanVienPhanCongResponses = new ArrayList<NhanVienPhanCongResponse>();
 		for(NhanVien nhanVien : nhanViens){
-			if(nhanVien.getTaiKhoanNV().getQuyen().getMaquyen().trim().equals("AD") == false){
+			if(nhanVien.getTaiKhoanNV().getQuyen().getMaquyen().trim().equals("NV") == true){
 				NhanVienPhanCongResponse nhanVienPhanCongResponse = new NhanVienPhanCongResponse();
 				nhanVienPhanCongResponse.setNhanVien(nhanVien);
 				List<DonHang> donHangs = donHangService.getAllDonHangByNVGPT(nhanVien.getManv());

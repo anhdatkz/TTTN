@@ -23,7 +23,7 @@ function EmployeeManager() {
     }
 
     useEffect(() => {
-        fetch(`${apiConfigs.baseUrl}/nhanvien`)
+        fetch(`${apiConfigs.baseUrl}/nhanvien/phancong`)
             .then((res) => res.json())
             .then((data) => {
                 setNhanViens(data)
@@ -55,17 +55,17 @@ function EmployeeManager() {
                         <tbody>
                             {nhanviens.map((nv, index) => (
                                 <tr key={index}>
-                                    <td>{nv.manv}</td>
-                                    <td>{nv.hoten}</td>
-                                    <td>{nv.sdt}</td>
-                                    <td>{nv.email}</td>
+                                    <td>{nv.nhanVien.manv}</td>
+                                    <td>{nv.nhanVien.hoten}</td>
+                                    <td>{nv.nhanVien.sdt}</td>
+                                    <td>{nv.nhanVien.email}</td>
                                     <td>
                                         <div className={style["edit"]}><FaEdit /></div>
                                         {/* <div className={style["delete"]}><FaTrashAlt /></div>
                                         <div className={style["detail-list"]}><FaList /></div> */}
                                     </td>
                                     <td><div className={style["delete"]}><FaTrashAlt /></div></td>
-                                    <td><div className={style["detail-list"]} onClick={() => showModal(nv.manv, "detail")}><FaList /></div></td>
+                                    <td><div className={style["detail-list"]} onClick={() => showModal(nv.nhanVien.manv, "detail")}><FaList /></div></td>
                                 </tr>
                             ))}
                         </tbody>

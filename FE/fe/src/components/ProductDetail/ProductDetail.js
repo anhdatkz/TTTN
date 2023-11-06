@@ -10,6 +10,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import ModalRatingProduct from '../Modal/ModalRatingProduct'
 import { Rating } from 'react-simple-star-rating'
+import { formatDate } from '../../ultils/Format'
 
 
 function ProductsDetail() {
@@ -208,7 +209,7 @@ function ProductsDetail() {
                                     <div className='user-rate'>{rate.tenkh}</div>
                                     <Rating size="16" initialValue={rate.diem} readonly fillColor='#ff7300'></Rating>
                                     <div>{rate.mota}</div>
-                                    <div className='date-rate'>{rate.ngaybinhluan}</div>
+                                    <div className='date-rate'>{formatDate(rate.ngaybinhluan)}</div>
                                 </div>
                             ))}
                         </div>)
