@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { getCartItem } from '../../features/cartSlice';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { loginValidations } from '../../ultils/ValidationMessages';
+import { loginMessages } from '../../ultils/ErrorMessages';
 
 
 function Login() {
@@ -58,6 +59,9 @@ function Login() {
             })
                 .then((response) => {
                     if (response.ok) {
+                        toast.success(loginMessages.LOGIN_SUCCESS, {
+                            position: "top-center"
+                        })
                         return response.json()
                     }
                     throw Error(response.status)
@@ -87,16 +91,16 @@ function Login() {
                         })
 
                     if (data.authorities[0] === "ROLE_USER") {
-                        toast.success("Đăng nhập thành công", {
-                            position: "top-center"
-                        })
+                        // toast.success("Đăng nhập thành công", {
+                        //     position: "top-center"
+                        // })
                         navigate("/user/profile")
                     } else {
                         localStorage.setItem('isLogin', false)
                         localStorage.setItem('username', "")
                         localStorage.setItem('role', "")
                         localStorage.setItem('token', "")
-                        toast.error("Tên đăng nhập hoặc mật khẩu không đúng", {
+                        toast.error(loginMessages.LOGIN_E001, {
                             position: "top-center"
                         })
                     }
@@ -104,7 +108,7 @@ function Login() {
                     console.log('Success:', data);
                 })
                 .catch((error) => {
-                    toast.error("Tên đăng nhập hoặc mật khẩu không đúng", {
+                    toast.error(loginMessages.LOGIN_E001, {
                         position: "top-center"
                     })
                     // loadData()

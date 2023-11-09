@@ -93,7 +93,7 @@ function ProductsDetail() {
             .then((res) => res.json())
             .then((data) => {
                 setProduct(data)
-                console.log(data)
+                console.log("aaaaaaaaaaaaaaaaaa", data)
                 setPercent(data.giamgia[0]
                     ? data.giamgia[0].phantram
                     : 0)

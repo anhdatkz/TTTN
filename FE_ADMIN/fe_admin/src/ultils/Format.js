@@ -4,7 +4,7 @@ export function formatTien(n, currency) {
 
 export function caculate(data) {
     // return (data.gia - data.gia * data.ctGiamGiaLSP[0].phantram / 100)
-    return (data.gia - data.gia * data.ctGiamGiaLSP[0].phantram / 100)
+    return (data.gia - data.gia * data.giamgia[0].phantram / 100)
 }
 
 export function getDate() {

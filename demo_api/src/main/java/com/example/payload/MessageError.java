@@ -5,12 +5,15 @@ public class MessageError {
 	public static final String USERNAME_EMPTY_ERROR =  "ERROR_USERNAME001";//Tên đăng nhập không được bỏ trống
 	public static final String USERNAME_EXIST_ERROR =  "ERROR_USERNAME002";//Tên đăng nhập không được bỏ trống
 	
+	public static final String USERID_EXIST_ERROR =  "ERROR_USERID";
+	
 	public static final String PASS_STRING_LARGE = "ERROR_PASS002";//Độ dài mật khẩu vượt quá 20 ký tự
 	public static final String PASS_STRING_NOT_ENOUGH = "ERROR_PASS003";//Độ dài mật khẩu ít nhất 6 ký tự
 	public static final String PASS_STRING_EMPTY = "ERROR_PASS001";// Mật khẩu không được bỏ trống
 	public static final String FAIL_LOGIN = "ERROR_LOGIN001";//Tên đăng nhập hoặc mật khẩu không chính xác
 	public static final String SUCCESS_LOGIN = "SUCCESS_LOGIN";// Đăng nhập thành công
 	
+	public static final String SUCCESS_REGISTER = "SUCCESS_REGISTER";// Đăng ký thành công
 	
 	public static final String CHANGE_STATUS_SUCCESS = "CHANGE_STATUS_SUCCESS";// CHUYỂN TRẠNG THÁI THÀNH CÔNG
 	public static final String CHANGE_STATUS_FAIL = "CHANGE_STATUS_FAIL";// CHUYỂN TRẠNG THÁI THÀNH CÔNG
@@ -47,11 +50,15 @@ public class MessageError {
         case MessageError.USERNAME_EMPTY_ERROR:
             return "Tên đăng nhập không được bỏ trống!";
         case MessageError.USERNAME_EXIST_ERROR:
-            return "Tên đăng nhập đã được sử dụng!";    
+            return "Tên đăng nhập đã được sử dụng!";  
+        case MessageError.USERID_EXIST_ERROR:
+            return "CMND đã được sử dụng!";  
         case MessageError.FAIL_LOGIN:
             return "Tên đăng nhập hoặc mật khẩu không chính xác nhé!";
         case MessageError.SUCCESS_LOGIN:
             return "Đăng nhập thành công!";
+        case MessageError.SUCCESS_REGISTER:
+            return "Đăng ký thành công!";
         case MessageError.PASS_STRING_LARGE:
             return "Độ dài mật khẩu vượt quá 20 ký tự!";
         case MessageError.PASS_STRING_NOT_ENOUGH:

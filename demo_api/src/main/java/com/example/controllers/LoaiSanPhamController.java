@@ -1,7 +1,9 @@
 package com.example.controllers;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,9 +32,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entities.CTDH;
+import com.example.entities.CTGiamGia;
 import com.example.entities.CungCap;
 import com.example.entities.CungCapKeys;
 import com.example.entities.DonHang;
+import com.example.entities.DotGiamGia;
 import com.example.entities.Hang;
 import com.example.entities.LoaiSanPham;
 import com.example.entities.Ram;
@@ -44,6 +48,7 @@ import com.example.repository.LoaiSanPhamRepository;
 import com.example.service.CTDHService;
 import com.example.service.CungCapService;
 import com.example.service.DonHangService;
+import com.example.service.DotGiamGiaService;
 import com.example.service.HangService;
 import com.example.service.LoaiSanPhamService;
 import com.example.service.RamService;
@@ -77,6 +82,9 @@ public class LoaiSanPhamController {
 	@Autowired
 	private CungCapService cungCapService;
 	
+	@Autowired
+	private DotGiamGiaService dotGiamGiaService;
+	
 //	@GetMapping("/loaisanpham")
 //	public List<LoaiSanPham> getAllLoaiSanPham(){
 //		return this.loaiSanPhamService.get8LSP();
@@ -100,6 +108,32 @@ public class LoaiSanPhamController {
 	@GetMapping("/lspnew")
 	public List<LoaiSanPham> getAllLoaiSanPhamNew(){
 		return this.loaiSanPhamService.get8LSPNew();
+	}
+	
+	@GetMapping("/lspgg")
+	public List<LoaiSanPham> getAllLoaiSanPhamGG(){
+		List<LoaiSanPham> lspKM = new ArrayList<LoaiSanPham>();
+		List<DotGiamGia> dotGiamGias = dotGiamGiaService.listAll();
+		List<DotGiamGia> dotGiamGiaActive = new ArrayList<DotGiamGia>();
+		Date toDay = new Date();
+		
+		for(DotGiamGia dgg : dotGiamGias){
+			if(toDay.after(dgg.getNgaybd()) && toDay.before(dgg.getNgaykt())) {
+				dotGiamGiaActive.add(dgg);
+			}
+		}
+		
+		for(DotGiamGia dgg : dotGiamGiaActive){
+			List<CTGiamGia> ctdggs = new ArrayList<CTGiamGia>();
+			ctdggs = dgg.getCtGiamGiasDGG();
+			for(CTGiamGia ctGiamGia : ctdggs){
+				LoaiSanPham lSanPhamGG = new LoaiSanPham();
+				lspKM.add(loaiSanPhamService.getLoaiSanPhamById(ctGiamGia.getId().getMaloaictgg()));
+			}
+		}
+		
+		if(lspKM.size() > 8) return lspKM.subList(0, 8);
+		else return lspKM;
 	}
 	
 	@GetMapping("/lspkm")
@@ -186,19 +220,158 @@ public class LoaiSanPhamController {
 		return lspNhaCC;
 	}
 	
+//	@GetMapping("/lsp")
+//	public List<LoaiSanPham> getAllLSP(){
+//		return this.loaiSanPhamService.listAll();
+//	}
+	
 	@GetMapping("/lsp")
-	public List<LoaiSanPham> getAllLSP(){
-		return this.loaiSanPhamService.listAll();
+	public List<LoaiSanPhamResponse> getAllLSP(){
+		List<LoaiSanPham> lsps = loaiSanPhamService.listAll();
+		List<LoaiSanPhamResponse> lspNew = new ArrayList<LoaiSanPhamResponse>();
+		List<DotGiamGia> dotGiamGias = dotGiamGiaService.listAll();
+		List<DotGiamGia> dotGiamGiaActive = new ArrayList<DotGiamGia>();
+		Date toDay = new Date();
+		for(DotGiamGia dgg : dotGiamGias){
+			if(toDay.after(dgg.getNgaybd()) && toDay.before(dgg.getNgaykt())) {
+				dotGiamGiaActive.add(dgg);
+			}
+		}
+		
+		for(LoaiSanPham loaiSanPham : lsps){
+			LoaiSanPhamResponse lsp = new LoaiSanPhamResponse();
+			lsp.setAnh(loaiSanPham.getAnh());
+			lsp.setChip(loaiSanPham.getChip());
+			lsp.setGia(loaiSanPham.getGia());
+			lsp.setHedieuhanh(loaiSanPham.getMahdh());
+			lsp.setMahang(loaiSanPham.getHang().getTenhang());
+			lsp.setMaloai(loaiSanPham.getMaloai());
+			lsp.setManhinh(loaiSanPham.getManhinh());
+			lsp.setMota(loaiSanPham.getMota());
+			lsp.setPin(loaiSanPham.getPin());
+			lsp.setRam(loaiSanPham.getRam().getDungluong());
+			lsp.setRom(loaiSanPham.getRom().getDungluong());
+			lsp.setSoluongton(loaiSanPham.getSoluongton());
+			lsp.setTenloai(loaiSanPham.getTenloai());
+			lsp.setThoigianbh(loaiSanPham.getThoigianbh());
+			lsp.setRamat(loaiSanPham.getRamat());
+			
+			List<CTGiamGia> ctGiamGias = loaiSanPham.getCtGiamGiaLSP();
+			List<CTGiamGia> ctGiamGiaActive = new ArrayList<CTGiamGia>();
+			for(CTGiamGia ctGiamGia : ctGiamGias){
+				for(DotGiamGia dotGiamGia : dotGiamGiaActive){
+					if(ctGiamGia.getId().getMadotctgg().trim().equals(dotGiamGia.getMadot().trim())){
+						ctGiamGiaActive.add(ctGiamGia);					}
+				}
+			}
+			lsp.setGiamgia(ctGiamGiaActive);
+			lspNew.add(lsp);
+		}
+				
+		return lspNew;
 	}
 	
+//	@GetMapping("/loaisanpham/hang={id}")
+//	public List<LoaiSanPham> findLoaiSanPhamByHang(@PathVariable String id){
+//		return this.loaiSanPhamService.findLoaiSanPhamByHang(id);
+//		
+//	}
 	@GetMapping("/loaisanpham/hang={id}")
-	public List<LoaiSanPham> findLoaiSanPhamByHang(@PathVariable String id){
-		return this.loaiSanPhamService.findLoaiSanPhamByHang(id);
+	public List<LoaiSanPhamResponse> findLoaiSanPhamByHang(@PathVariable String id){
+		List<LoaiSanPham> lsps = loaiSanPhamService.findLoaiSanPhamByHang(id);
+		List<LoaiSanPhamResponse> lspNew = new ArrayList<LoaiSanPhamResponse>();
+		List<DotGiamGia> dotGiamGias = dotGiamGiaService.listAll();
+		List<DotGiamGia> dotGiamGiaActive = new ArrayList<DotGiamGia>();
+		Date toDay = new Date();
+		for(DotGiamGia dgg : dotGiamGias){
+			if(toDay.after(dgg.getNgaybd()) && toDay.before(dgg.getNgaykt())) {
+				dotGiamGiaActive.add(dgg);
+			}
+		}
+		
+		for(LoaiSanPham loaiSanPham : lsps){
+			LoaiSanPhamResponse lsp = new LoaiSanPhamResponse();
+			lsp.setAnh(loaiSanPham.getAnh());
+			lsp.setChip(loaiSanPham.getChip());
+			lsp.setGia(loaiSanPham.getGia());
+			lsp.setHedieuhanh(loaiSanPham.getMahdh());
+			lsp.setMahang(loaiSanPham.getHang().getTenhang());
+			lsp.setMaloai(loaiSanPham.getMaloai());
+			lsp.setManhinh(loaiSanPham.getManhinh());
+			lsp.setMota(loaiSanPham.getMota());
+			lsp.setPin(loaiSanPham.getPin());
+			lsp.setRam(loaiSanPham.getRam().getDungluong());
+			lsp.setRom(loaiSanPham.getRom().getDungluong());
+			lsp.setSoluongton(loaiSanPham.getSoluongton());
+			lsp.setTenloai(loaiSanPham.getTenloai());
+			lsp.setThoigianbh(loaiSanPham.getThoigianbh());
+			lsp.setRamat(loaiSanPham.getRamat());
+			
+			List<CTGiamGia> ctGiamGias = loaiSanPham.getCtGiamGiaLSP();
+			List<CTGiamGia> ctGiamGiaActive = new ArrayList<CTGiamGia>();
+			for(CTGiamGia ctGiamGia : ctGiamGias){
+				for(DotGiamGia dotGiamGia : dotGiamGiaActive){
+					if(ctGiamGia.getId().getMadotctgg().trim().equals(dotGiamGia.getMadot().trim())){
+						ctGiamGiaActive.add(ctGiamGia);					}
+				}
+			}
+			lsp.setGiamgia(ctGiamGiaActive);
+			lspNew.add(lsp);
+		}
+				
+		return lspNew;
+		
 	}
+	
+//	@GetMapping("/loaisanpham/query={name}")
+//	public List<LoaiSanPham> findLoaiSanPhamByname(@PathVariable String name){
+//		return this.loaiSanPhamService.findLoaiSanPhamByName(name);
+//	}
 	
 	@GetMapping("/loaisanpham/query={name}")
-	public List<LoaiSanPham> findLoaiSanPhamByname(@PathVariable String name){
-		return this.loaiSanPhamService.findLoaiSanPhamByName(name);
+	public List<LoaiSanPhamResponse> findLoaiSanPhamByname(@PathVariable String name){
+		List<LoaiSanPham> lsps = loaiSanPhamService.findLoaiSanPhamByName(name);
+		List<LoaiSanPhamResponse> lspNew = new ArrayList<LoaiSanPhamResponse>();
+		List<DotGiamGia> dotGiamGias = dotGiamGiaService.listAll();
+		List<DotGiamGia> dotGiamGiaActive = new ArrayList<DotGiamGia>();
+		Date toDay = new Date();
+		for(DotGiamGia dgg : dotGiamGias){
+			if(toDay.after(dgg.getNgaybd()) && toDay.before(dgg.getNgaykt())) {
+				dotGiamGiaActive.add(dgg);
+			}
+		}
+		
+		for(LoaiSanPham loaiSanPham : lsps){
+			LoaiSanPhamResponse lsp = new LoaiSanPhamResponse();
+			lsp.setAnh(loaiSanPham.getAnh());
+			lsp.setChip(loaiSanPham.getChip());
+			lsp.setGia(loaiSanPham.getGia());
+			lsp.setHedieuhanh(loaiSanPham.getMahdh());
+			lsp.setMahang(loaiSanPham.getHang().getTenhang());
+			lsp.setMaloai(loaiSanPham.getMaloai());
+			lsp.setManhinh(loaiSanPham.getManhinh());
+			lsp.setMota(loaiSanPham.getMota());
+			lsp.setPin(loaiSanPham.getPin());
+			lsp.setRam(loaiSanPham.getRam().getDungluong());
+			lsp.setRom(loaiSanPham.getRom().getDungluong());
+			lsp.setSoluongton(loaiSanPham.getSoluongton());
+			lsp.setTenloai(loaiSanPham.getTenloai());
+			lsp.setThoigianbh(loaiSanPham.getThoigianbh());
+			lsp.setRamat(loaiSanPham.getRamat());
+			
+			List<CTGiamGia> ctGiamGias = loaiSanPham.getCtGiamGiaLSP();
+			List<CTGiamGia> ctGiamGiaActive = new ArrayList<CTGiamGia>();
+			for(CTGiamGia ctGiamGia : ctGiamGias){
+				for(DotGiamGia dotGiamGia : dotGiamGiaActive){
+					if(ctGiamGia.getId().getMadotctgg().trim().equals(dotGiamGia.getMadot().trim())){
+						ctGiamGiaActive.add(ctGiamGia);					}
+				}
+			}
+			lsp.setGiamgia(ctGiamGiaActive);
+			lspNew.add(lsp);
+		}
+				
+		return lspNew;
 	}
 	
 //	@GetMapping("/filterlsp")
@@ -259,6 +432,15 @@ public class LoaiSanPhamController {
 	
 	@GetMapping("/loaisanpham/{id}")
 	public ResponseEntity<LoaiSanPhamResponse> getLoaiSanPhamById(@PathVariable String id){
+		List<DotGiamGia> dotGiamGias = dotGiamGiaService.listAll();
+		List<DotGiamGia> dotGiamGiaActive = new ArrayList<DotGiamGia>();
+		Date toDay = new Date();
+		for(DotGiamGia dgg : dotGiamGias){
+			if(toDay.after(dgg.getNgaybd()) && toDay.before(dgg.getNgaykt())) {
+				dotGiamGiaActive.add(dgg);
+			}
+		}
+		
 		try {
 			LoaiSanPham loaiSanPham = loaiSanPhamService.getLoaiSanPhamById(id);
 			LoaiSanPhamResponse lsp = new LoaiSanPhamResponse();
@@ -277,7 +459,16 @@ public class LoaiSanPhamController {
 			lsp.setTenloai(loaiSanPham.getTenloai());
 			lsp.setThoigianbh(loaiSanPham.getThoigianbh());
 			lsp.setRamat(loaiSanPham.getRamat());
-			lsp.setGiamgia(loaiSanPham.getCtGiamGiaLSP());
+			
+			List<CTGiamGia> ctGiamGias = loaiSanPham.getCtGiamGiaLSP();
+			List<CTGiamGia> ctGiamGiaActive = new ArrayList<CTGiamGia>();
+			for(CTGiamGia ctGiamGia : ctGiamGias){
+				for(DotGiamGia dotGiamGia : dotGiamGiaActive){
+					if(ctGiamGia.getId().getMadotctgg().trim().equals(dotGiamGia.getMadot().trim())){
+						ctGiamGiaActive.add(ctGiamGia);					}
+				}
+			}
+			lsp.setGiamgia(ctGiamGiaActive);
 			return new ResponseEntity<LoaiSanPhamResponse>(lsp, HttpStatus.OK);
 		} catch (NoSuchElementException e) {
 			// TODO: handle exception

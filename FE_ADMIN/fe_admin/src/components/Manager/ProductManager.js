@@ -127,7 +127,7 @@ function ProductManager() {
                                     <td><img className={style["product-img-manager"]} src={lsp.anh} alt="" /></td>
                                     <td>{lsp.tenloai}</td>
                                     <td>{lsp.soluongton}</td>
-                                    <td>{lsp.ctGiamGiaLSP[0]
+                                    <td>{lsp.giamgia[0]
                                         ? VND.format(caculate(lsp))
                                         : VND.format(lsp.gia)} </td>
                                     {roleName === "ROLE_THUKHO"

@@ -34,6 +34,7 @@ import com.example.payload.DoanhThuThang;
 import com.example.payload.DonHangRequest;
 import com.example.payload.DonHangResponse;
 import com.example.payload.DonHangUpdateRequest;
+import com.example.payload.MessageError;
 import com.example.payload.TrangThaiRequest;
 import com.example.service.CTDHService;
 import com.example.service.DonHangService;
@@ -181,11 +182,12 @@ public class DonHangController {
 			return (List<DonHang>) new ResponseEntity<List<DonHang>>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
+//	Cap nhat trang thai don hang
 	@PutMapping("/donhang")
 	public ResponseEntity<ApiResponse> updateTrangThaiDH(@RequestBody TrangThaiRequest trangThaiRequest){
 		DonHang donHang = donhangService.getDonHangById(trangThaiRequest.getMadh());
 		TrangThai trangThai = trangThaiSerVice.getTrangThaiById(trangThaiRequest.getMatrangthai());
+//		neu giao hang that bai, trang thai = 5
 		if(trangThaiRequest.getMatrangthai().equals(5)){
 			List<CTDH> ctdhs = ctdhService.getCTDHByIdDH(trangThaiRequest.getMadh());
 			for(CTDH ctdh : ctdhs){
@@ -197,7 +199,8 @@ public class DonHangController {
 		}
 		donHang.setTrangThai(trangThai);
 		donhangService.save(donHang);
-		return new ResponseEntity(new ApiResponse(true, "Cập nhật trạng thái đơn hàng thành công!"), HttpStatus.OK);
+//		return new ResponseEntity(new ApiResponse(true, "Cập nhật trạng thái đơn hàng thành công!"), HttpStatus.OK);
+		return new ResponseEntity(new ApiResponse(true, MessageError.getMessageEror(MessageError.CHANGE_STATUS_SUCCESS)), HttpStatus.OK);
 	}
 	
 //	@PutMapping("/donhang")
@@ -209,6 +212,7 @@ public class DonHangController {
 //		return new ResponseEntity(new ApiResponse(true, "Cập nhật trạng thái đơn hàng thành công!"), HttpStatus.OK);
 //	}
 	
+//	Phan cong giao hang 
 	@PutMapping("/donhang/{id}")
 	public ResponseEntity<DonHangResponse> updatedonhang(@RequestBody DonHangUpdateRequest donHangUpdateRequest,
 			@PathVariable Integer id){

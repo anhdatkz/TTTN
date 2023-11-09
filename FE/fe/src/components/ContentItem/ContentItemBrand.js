@@ -133,8 +133,12 @@ function ContentItemBrand(props) {
             .then((data) => {
                 setFilter("")
                 setLoaiSP(data.map((item) => {
-                    if (item.ctGiamGiaLSP[0]) {
-                        item.giamoi = caculate(item)
+                    // if (item.ctGiamGiaLSP[0]) {
+                    //     item.giamoi = caculate(item)
+                    //     return item
+                    // }
+                    if (item.giamgia[0]) {
+                        item.giamoi = item.gia - item.gia * item.giamgia[0].phantram / 100
                         return item
                     }
                     item.giamoi = item.gia
@@ -229,13 +233,13 @@ function ContentItemBrand(props) {
                                                                 </div>
                                                                 <div className='product__name'>{loaisp.tenloai}</div>
                                                                 <div className='product__old-price'>
-                                                                    {loaisp.ctGiamGiaLSP[0]
+                                                                    {loaisp.giamgia[0]
                                                                         ? (<Fragment>
                                                                             <div className="old-price">
                                                                                 {VND.format(loaisp.gia)}
                                                                             </div>
                                                                             <div className="percent">
-                                                                                {loaisp.ctGiamGiaLSP[0] ? `${loaisp.ctGiamGiaLSP[0].phantram} %` : ""}
+                                                                                {loaisp.giamgia[0] ? `${loaisp.giamgia[0].phantram} %` : ""}
                                                                             </div>
                                                                         </Fragment>)
                                                                         : (<Fragment />)}

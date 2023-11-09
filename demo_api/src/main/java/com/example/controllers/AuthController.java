@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.configsJWT.JwtTokenProvider;
 import com.example.entities.TaiKhoan;
+import com.example.payload.MessageError;
 import com.example.repository.TaiKhoanRepository;
 
 @RestController
@@ -36,6 +37,12 @@ public class AuthController {
 
 	@PostMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<String> authenticate(@RequestBody TaiKhoan user) {
+		if(user.getMatk() == ""){
+			return new ResponseEntity<String>(MessageError.getMessageEror(MessageError.USERNAME_EMPTY_ERROR), HttpStatus.BAD_REQUEST);
+		}
+		if(user.getPassword() == ""){
+			return new ResponseEntity<String>(MessageError.getMessageEror(MessageError.PASS_STRING_EMPTY), HttpStatus.BAD_REQUEST	);
+		}
 		log.info("UserResourceImpl : authenticate");
 		JSONObject jsonObject = new JSONObject();
 		try {
@@ -46,6 +53,7 @@ public class AuthController {
 				jsonObject.put("name", authentication.getName());
 				jsonObject.put("authorities", authentication.getAuthorities());
 				jsonObject.put("token", tokenProvider.createToken(matk, userRepository.findById(matk).get().getQuyen()));
+				jsonObject.put("message", MessageError.getMessageEror(MessageError.SUCCESS_LOGIN));
 				return new ResponseEntity<String>(jsonObject.toString(), HttpStatus.OK);
 			}
 		} catch (JSONException e) {

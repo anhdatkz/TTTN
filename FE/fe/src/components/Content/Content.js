@@ -10,7 +10,7 @@ function Content(props) {
     return (
         <div id='content'>
             <ContentItem title={listContent[0]} url="lspnew" />
-            <ContentItem title={listContent[1]} url="lspkm" />
+            <ContentItem title={listContent[1]} url="lspgg" />
             <ContentItem title={listContent[2]} url="lspbestseller" />
         </div>
     )

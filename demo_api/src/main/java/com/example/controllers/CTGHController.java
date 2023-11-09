@@ -1,6 +1,7 @@
 package com.example.controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -22,9 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.entities.CTGH;
 import com.example.entities.CTGHKeys;
 import com.example.entities.CTGiamGia;
+import com.example.entities.DotGiamGia;
 import com.example.entities.LoaiSanPham;
 import com.example.payload.CTGHResponse;
 import com.example.service.CTGHService;
+import com.example.service.DotGiamGiaService;
 import com.example.service.LoaiSanPhamService;;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -35,7 +38,10 @@ public class CTGHController {
 	private CTGHService ctghService;
 	@Autowired
 	private LoaiSanPhamService loaiSanPhamService;
-
+	@Autowired
+	private DotGiamGiaService dotGiamGiaService;
+	
+	
 	@GetMapping("/ctgh")
 	public List<CTGH> getAllCTGH() {
 		return this.ctghService.listAll();
@@ -52,15 +58,34 @@ public class CTGHController {
         String username = authentication.getName();
 		List<CTGH> ctghs = ctghService.getCTGHByMaTk(username);
 		List<CTGHResponse> ctghResponses = new ArrayList<CTGHResponse>();
+		
+		List<DotGiamGia> dotGiamGias = dotGiamGiaService.listAll();
+		List<DotGiamGia> dotGiamGiaActive = new ArrayList<DotGiamGia>();
+		Date toDay = new Date();
+		for(DotGiamGia dgg : dotGiamGias){
+			if(toDay.after(dgg.getNgaybd()) && toDay.before(dgg.getNgaykt())) {
+				dotGiamGiaActive.add(dgg);
+			}
+		}
+		
 		for(CTGH ctgh : ctghs){
 			LoaiSanPham lsp = loaiSanPhamService.getLoaiSanPhamById(ctgh.getId().getMaloaictgh().trim());
 			List<CTGiamGia> ctGiamGias = lsp.getCtGiamGiaLSP();
+//			List<CTGiamGia> ctGiamGias = loaiSanPham.getCtGiamGiaLSP();
+			List<CTGiamGia> ctGiamGiaActive = new ArrayList<CTGiamGia>();
+			for(CTGiamGia ctGiamGia : ctGiamGias){
+				for(DotGiamGia dotGiamGia : dotGiamGiaActive){
+					if(ctGiamGia.getId().getMadotctgg().trim().equals(dotGiamGia.getMadot().trim())){
+						ctGiamGiaActive.add(ctGiamGia);					}
+				}
+			}
+//			lsp.setGiamgia(ctGiamGiaActive);
 			CTGHResponse ctghResponse  = new CTGHResponse();
 			ctghResponse.setIdgiohang(ctgh.getId().getIdgiohangctgh());
 			ctghResponse.setMaloai(ctgh.getId().getMaloaictgh());
 			ctghResponse.setAnh(lsp.getAnh());
 			ctghResponse.setTenloai(lsp.getTenloai());
-			if (ctGiamGias.size() == 0) {
+			if (ctGiamGiaActive.size() == 0) {
 				ctghResponse.setGia(lsp.getGia());
 			} else {
 				ctghResponse.setGia(lsp.getGia() - (lsp.getGia() * ctGiamGias.get(0).getPhantram() / 100));

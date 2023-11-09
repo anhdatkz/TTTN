@@ -26,6 +26,7 @@ import com.example.entities.KhachHang;
 import com.example.entities.Quyen;
 import com.example.entities.TaiKhoan;
 import com.example.payload.ApiResponse;
+import com.example.payload.MessageError;
 import com.example.service.GioHangService;
 import com.example.service.KhachHangService;
 import com.example.service.TaiKhoanService;
@@ -81,12 +82,16 @@ public class KhachHangController {
 	@PostMapping("/khachhang")
 	public ResponseEntity<ApiResponse> saveKhachHang(@RequestBody KhachHang khachHang){
 		if(taiKhoanService.exitsByMaTK(khachHang.getTaiKhoanKH().getMatk())){
-			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Username đã được sử dụng!"),
+//			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "Username đã được sử dụng!"),
+//                    HttpStatus.OK);
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, MessageError.getMessageEror(MessageError.USERNAME_EXIST_ERROR)),
                     HttpStatus.OK);
 		}
 		if(khachHangService.existByCMND(khachHang.getCmnd())){
-			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "CMND bị trùng!"),
-                    HttpStatus.OK);
+//			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "CMND bị trùng!"),
+//                    HttpStatus.OK);
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, MessageError.getMessageEror(MessageError.USERID_EXIST_ERROR)),
+					HttpStatus.OK);
 		}
 		Quyen quyen = new Quyen();
 		quyen.setMaquyen("KH");
@@ -98,7 +103,8 @@ public class KhachHangController {
 		GioHang gioHang = new GioHang();
 		gioHang.setKhachHangGH(khachHang);
 		GioHangService.save(gioHang);
-		return new ResponseEntity(new ApiResponse(true, "Tạo người dùng thành công!"), HttpStatus.OK);
+//		return new ResponseEntity(new ApiResponse(true, "Tạo người dùng thành công!"), HttpStatus.OK);
+		return new ResponseEntity(new ApiResponse(true, MessageError.getMessageEror(MessageError.SUCCESS_REGISTER)), HttpStatus.OK);
 	}
 	
 	@GetMapping("/khachhang/{id}")
