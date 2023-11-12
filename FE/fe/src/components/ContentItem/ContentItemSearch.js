@@ -4,7 +4,7 @@ import { FaStar } from 'react-icons/fa'
 import "./ContentItem.css"
 import { Link } from 'react-router-dom'
 import { useParams } from "react-router-dom"
-import { caculate, formatTien, VND } from '../../ultils/Format'
+import { caculate, caculate2, formatTien, VND } from '../../ultils/Format'
 
 function ContentItemSearch(props) {
     const { query } = useParams()
@@ -38,7 +38,7 @@ function ContentItemSearch(props) {
         console.log(cartItems)
     };
 
-    if (loaiSP === []) {
+    if (loaiSP == []) {
         return (
             <div className="content__item">
                 <div className="content__item-title">
@@ -73,11 +73,11 @@ function ContentItemSearch(props) {
                                                     {VND.format(loaisp.gia)}
                                                 </div>
                                                 <div className="percent">
-                                                    {loaisp.ctGiamGiaLSP[0] ? `${loaisp.ctGiamGiaLSP[0].phantram} %` : ""}
+                                                    {loaisp.giamgia[0] ? `${loaisp.giamgia[0].phantram} %` : ""}
                                                 </div>
                                             </div>
-                                            <div className='product__new-price'>{loaisp.ctGiamGiaLSP[0]
-                                                ? VND.format(caculate(loaisp))
+                                            <div className='product__new-price'>{loaisp.giamgia[0]
+                                                ? VND.format(caculate2(loaisp))
                                                 : VND.format(loaisp.gia)}
                                             </div>
                                             <ul className='product__star'>

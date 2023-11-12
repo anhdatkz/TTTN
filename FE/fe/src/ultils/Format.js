@@ -7,6 +7,11 @@ export function caculate(data) {
     return (data.gia - data.gia * data.ctGiamGiaLSP[0].phantram / 100)
 }
 
+export function caculate2(data) {
+    // return (data.gia - data.gia * data.ctGiamGiaLSP[0].phantram / 100)
+    return (data.gia - data.gia * data.giamgia[0].phantram / 100)
+}
+
 export const VND = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',

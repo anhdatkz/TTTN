@@ -41,7 +41,8 @@ function Register() {
                 .max(20, registerValidations.VALIDATION_PASS_E002)
                 .required(registerValidations.VALIDATION_PASS_E001).matches(usernameRegex, registerValidations.VALIDATION_PASS_E003),
             cmnd: Yup.string()
-                // .max(10, "CMND phải có ít hơn 10 ký tự")
+                .max(10, registerValidations.VALIDATION_CMND_03)
+                .min(10, registerValidations.VALIDATION_CMND_03)
                 .required(registerValidations.VALIDATION_CMND_01).matches(numberRegex, registerValidations.VALIDATION_CMND_02),
             tenkh: Yup.string()
                 .required(registerValidations.VALIDATION_NAME),

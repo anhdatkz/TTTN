@@ -16,6 +16,7 @@ const registerValidations = {
     VALIDATION_PASS_E003: "Mật khẩu phải viết liền không dấu",
     VALIDATION_CMND_01: "CMND không được rỗng!",
     VALIDATION_CMND_02: "CMND chỉ chứa số!",
+    VALIDATION_CMND_03: "CMND phải là 10 số",
     VALIDATION_NAME: "Họ tên không được rỗng!",
     VALIDATION_ADDRESS: "Địa chỉ không được rỗng!",
     VALIDATION_PHONENUMBER_01: "Số điện thoại không được rỗng!",

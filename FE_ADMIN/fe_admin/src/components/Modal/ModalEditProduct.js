@@ -6,6 +6,7 @@ import { useFormik } from 'formik';
 import * as Yup from "yup"
 import style from "./Modal.module.css"
 import { scrollTop, username } from "../../App";
+import { productValidations } from "../../ultils/ValidationMessages";
 
 function ModalEditProduct(props) {
     const { hide, action, maloai } = props
@@ -112,25 +113,27 @@ function ModalEditProduct(props) {
         },
         validationSchema: Yup.object({
             maloai: Yup.string()
-                .required("Mã loại không được rỗng!"),
-            // tenloai: Yup.string()
-            //     .required("Tên loại không được rỗng!"),
-            // chip: Yup.string()
-            //     .required("Chip không được rỗng!"),
-            // anh: Yup.string()
-            //     .required("Ảnh không được rỗng!"),
-            // mahdh: Yup.string()
-            //     .required("Hệ điều hành không được rỗng!"),
-            // pin: Yup.string()
-            //     .required("pin không được rỗng!"),
-            // manhinh: Yup.string()
-            //     .required("Màn hình không được rỗng!"),
-            // gia: Yup.string()
-            //     .required("Giá không được rỗng!"),
+                .required(productValidations.VALIDATION_PRODUCT_ID),
+            tenloai: Yup.string()
+                .required(productValidations.VALIDATION_PRODUCT_NAME),
+            chip: Yup.string()
+                .required(productValidations.VALIDATION_PRODUCT_CHIP),
+            anh: Yup.string()
+                .required(productValidations.VALIDATION_PRODUCT_IMG),
+            mahdh: Yup.string()
+                .required(productValidations.VALIDATION_PRODUCT_OS),
+            pin: Yup.number()
+                .min(1, productValidations.VALIDATION_PRODUCT_PIN_01)
+                .required(productValidations.VALIDATION_PRODUCT_PIN),
+            manhinh: Yup.string()
+                .required(productValidations.VALIDATION_PRODUCT_SCREEN),
+            gia: Yup.number()
+                .min(1, productValidations.VALIDATION_PRODUCT_PRICE_01)
+                .required(productValidations.VALIDATION_PRODUCT_PRICE),
             // soluong: Yup.string()
             //     .required("Số lượng không được rỗng!"),
-            // thoigianbh: Yup.string()
-            //     .required("Số lượng không được rỗng!"),
+            thoigianbh: Yup.string()
+                .required(productValidations.VALIDATION_PRODUCT_WARRANTY),
         }),
         onSubmit: (values) => {
             scrollTop()
@@ -139,6 +142,13 @@ function ModalEditProduct(props) {
 
 
     const handleEditProduct = () => {
+        // if(tenloaiRef.current.value.trim() === ""
+        // || anhRef.current.value.trim() === ""
+        // || chipRef.current.value.trim() === ""
+        // || mahdhRef.current.value.trim()
+        // || pinRef.current.value){
+
+        // }
         const formData = {
             maloai: maloaiRef.current.value.trim(),
             tenloai: tenloaiRef.current.value.trim(),
@@ -178,7 +188,7 @@ function ModalEditProduct(props) {
                         position: "top-center"
                     })
                 }
-                // hide()
+                hide()
             })
             .catch((error) => {
                 toast.error("Chỉnh sửa sản phẩm thất bại!", {

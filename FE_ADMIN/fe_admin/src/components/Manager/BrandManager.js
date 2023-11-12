@@ -33,9 +33,9 @@ function BrandManager() {
     }
 
     const showModalEdit = (mahang) => {
+        setAction("edit")
         setMaHang(mahang.trim())
         console.warn(mahang)
-        setAction("delete")
         setModal(true)
     }
 

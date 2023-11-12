@@ -27,19 +27,19 @@ export default function ModalAdminOrder(props) {
 
     const formik = useFormik({
         initialValues: {
-            maddh: "",
-            nhacc: "",
-            ngaylap: "",
-            nguoilap: ""
+            soluong: 0,
+            dongia: 0
         },
         validationSchema: Yup.object({
-            maddh: Yup.string()
-                .required("Mã loại không được rỗng!"),
+            dongia: Yup.number()
+                .min(1, "Giá phải lớn hơn 0")
+                .required("Giá không được rỗng!"),
+            soluong: Yup.number()
+                .min(1, "Số lượng phải lớn hơn 0")
+                .required("Số lượng không được rỗng!"),
         }),
         onSubmit: (values) => {
-            console.log("SUBMIT")
-            const formData = {
-            }
+            handleAdd()
 
             scrollTop()
         }
@@ -86,6 +86,7 @@ export default function ModalAdminOrder(props) {
 
     return (
         <>
+            <form onSubmit={formik.handleSubmit} autoComplete="off">
             <div className="modal show fade" style={modalStyle}>
                 <div className="modal-dialog">
                     <div className="modal-content">
@@ -96,7 +97,7 @@ export default function ModalAdminOrder(props) {
                         <div className="modal-body">
                             <div className="mb-3">
                                 <label>Tên sản phẩm</label>
-                                <select name="tensp" id="tensp" className="form-control" onChange={formik.handleChange} onBlur={formik.handleBlur} ref={maloaiRef} >
+                                    <select name="tensp" id="tensp" className="form-control" ref={maloaiRef} >
                                     {lsp.map((sp, index) => (
                                         <option value={sp.maloai} key={index}>{sp.tenloai}</option>
                                     ))}
@@ -105,28 +106,30 @@ export default function ModalAdminOrder(props) {
                             <div className="mb-3">
                             <label>Số lượng</label>
                             <input ref={soluongRef} type="number" className="form-control" placeholder="Số lượng"
-                                name='maddh' onChange={formik.handleChange}
+                                        name='soluong' onChange={formik.handleChange}
                                 onBlur={formik.handleBlur} />
-                            {formik.touched.mahang && formik.errors.mahang ? (
-                                <div className={style["validate"]}>{formik.errors.mahang}</div>
+                                    {formik.touched.soluong && formik.errors.soluong ? (
+                                        <div className={style["validate"]}>{formik.errors.soluong}</div>
                             ) : null}
                         </div>
                         <div className="mb-3">
                             <label>Đơn giá</label>
                             <input ref={dongiaRef} type="number" className="form-control" placeholder="Đơn giá"
-                                name='maddh' onChange={formik.handleChange}
+                                        name='dongia' onChange={formik.handleChange}
                                 onBlur={formik.handleBlur} />
-                            {formik.touched.mahang && formik.errors.mahang ? (
-                                <div className={style["validate"]}>{formik.errors.mahang}</div>
+                                    {formik.touched.dongia && formik.errors.dongia ? (
+                                        <div className={style["validate"]}>{formik.errors.dongia}</div>
                             ) : null}
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-primary" onClick={handleAdd}>Lưu</button>
+                                    {/* <button type="button" className="btn btn-primary" onClick={handleAdd}>Lưu</button> */}
+                                    <button type="submit" className="btn btn-primary">Lưu</button>
                         </div>
                         </div>
                     </div>
                 </div>
             </div>
+            </form>
         </>
     )
 };

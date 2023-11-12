@@ -82,7 +82,8 @@ function ContentItemBrand(props) {
         setFilter("ram")
         let arr = []
         lsp.forEach((item) => {
-            if (item.ram.maram == ram) {
+            // if (item.ram.maram == ram) {
+            if (item.ram.trim() == ram.trim()) {
                 arr = [...arr, item]
             }
         })
@@ -94,7 +95,8 @@ function ContentItemBrand(props) {
         setFilter("rom")
         let arr = []
         lsp.forEach((item) => {
-            if (item.rom.marom == rom) {
+            // if (item.rom.marom == rom) {
+            if (item.rom.trim() == rom.trim()) {
                 arr = [...arr, item]
             }
         })
@@ -200,13 +202,13 @@ function ContentItemBrand(props) {
                                         <select name="ram" id="ram" className="form-control filter-item" ref={ramRef} onChange={() => handleChangeRam(loaiSP, ramRef.current.value)}>
                                             <option value="">RAM</option>
                                             {rams.map((ram) => (
-                                                <option value={ram.maram} key={ram.maram}>{ram.dungluong.trim()}</option>
+                                                <option value={ram.dungluong.trim()} key={ram.maram}>{ram.dungluong.trim()}</option>
                                             ))}
                                         </select>
                                         <select name="rom" id="rom" className="form-control filter-item" ref={romRef} onChange={() => handleChangeRom(loaiSP, romRef.current.value)}>
                                             <option value="">ROM</option>
                                             {roms.map((rom) => (
-                                                <option value={rom.marom} key={rom.marom}>{rom.dungluong.trim()}</option>
+                                                <option value={rom.dungluong.trim()} key={rom.marom}>{rom.dungluong.trim()}</option>
                                             ))}
                                         </select>
                                         <select name="gias" id="gias" className="form-control filter-item" ref={giaRef} onChange={() => handleChangePrice(loaiSP, giaRef.current.value)}>
@@ -275,13 +277,15 @@ function ContentItemBrand(props) {
                                                                 </div>
                                                                 <div className='product__name'>{lspFilter.tenloai}</div>
                                                                 <div className='product__old-price'>
-                                                                    {lspFilter.ctGiamGiaLSP[0]
+                                                                    {/* {lspFilter.ctGiamGiaLSP[0] */}
+                                                                    {lspFilter.giamgia[0]
                                                                         ? (<Fragment>
                                                                             <div className="old-price">
                                                                                 {VND.format(lspFilter.gia)}
                                                                             </div>
                                                                             <div className="percent">
-                                                                                {lspFilter.ctGiamGiaLSP[0] ? `${lspFilter.ctGiamGiaLSP[0].phantram} %` : ""}
+                                                                                {lspFilter.giamgia[0] ? `${lspFilter.giamgia[0].phantram} %` : ""}
+                                                                                {/* {lspFilter.ctGiamGiaLSP[0] ? `${lspFilter.ctGiamGiaLSP[0].phantram} %` : ""} */}
                                                                             </div>
                                                                         </Fragment>)
                                                                         : (<Fragment />)}

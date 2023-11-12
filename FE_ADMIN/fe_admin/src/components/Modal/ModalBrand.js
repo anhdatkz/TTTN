@@ -43,7 +43,8 @@ function ModalBrand(props) {
                 .required(brandValidations.VALIDATION_BRAND_NAME),
         }),
         onSubmit: (values) => {
-
+            if (action === "add") { handleAdd() }
+            // if (action === "edit") { handleEdit() }
         }
     })
 
@@ -130,16 +131,23 @@ function ModalBrand(props) {
     const handleEdit = () => {
         // let mahang = document.querySelector('input[name="mahang"').value
         // let tenhang = document.querySelector('input[name="tenhang"').value
-
-        let formData = {
-            tenhang: tenHangRef.current.value.trim(),
-            anh: anhRef.current.value.trim()
+        if (tenHangRef.current.value.trim() === "" || anhRef.current.value.trim() == "") {
+            toast.warn("Thông tin không được để trống!", {
+                position: "top-center"
+            })
+        } else {
+            let formData = {
+                tenhang: tenHangRef.current.value.trim(),
+                anh: anhRef.current.value.trim()
+            }
+            handleEditBrand(formData, mahang)
         }
-        handleEditBrand(formData, mahang)
+
     }
     return (
         <>
             {action === "add" ? (
+                <form className={`${style["container"]} p-3`} onSubmit={formik.handleSubmit} autoComplete="off">
                 <div className="modal show fade" style={modalStyle}>
                     <div className="modal-dialog">
                         <div className="modal-content">
@@ -179,12 +187,15 @@ function ModalBrand(props) {
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-primary" onClick={handleAdd}>Lưu</button>
+                                    {/* <button type="button" className="btn btn-primary" onClick={handleAdd}>Lưu</button> */}
+                                    <button type="submit" className="btn btn-primary">Lưu</button>
                             </div>
                         </div>
                     </div>
                 </div>
+                </form>
             ) : (
+                    // <form className={`${style["container"]} p-3`} onSubmit={formik.handleSubmit} autoComplete="off">
                 <div className="modal show fade" style={modalStyle}>
                     <div className="modal-dialog">
                         <div className="modal-content">
@@ -204,6 +215,9 @@ function ModalBrand(props) {
                                     <input ref={anhRef} type="text" className="form-control" placeholder="Link ảnh"
                                         name='anh' defaultValue={hang.anh} onChange={formik.handleChange}
                                         onBlur={formik.handleBlur} />
+                                        {formik.touched.anh && formik.errors.anh ? (
+                                            <div className={style["validate"]}>{formik.errors.anh}</div>
+                                        ) : null}
                                 </div>
 
                                 <div className="mb-3">
@@ -211,14 +225,19 @@ function ModalBrand(props) {
                                     <input ref={tenHangRef} type="text" className="form-control" placeholder="Tên hãng"
                                         name='tenhang' defaultValue={hang.tenhang} onChange={formik.handleChange}
                                         onBlur={formik.handleBlur} />
+                                        {formik.touched.tenhang && formik.errors.tenhang ? (
+                                            <div className={style["validate"]}>{formik.errors.tenhang}</div>
+                                        ) : null}
                                 </div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-primary" onClick={handleEdit}>Lưu</button>
+                                    <button type="button" className="btn btn-primary" onClick={handleEdit}>Lưu</button>
+                                    {/* <button type="submit" className="btn btn-primary">Lưu</button> */}
                             </div>
                         </div>
                     </div>
                 </div>
+                    // </form>
             )}
         </>
     )

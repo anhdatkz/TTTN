@@ -19,11 +19,14 @@ const brandValidations = {
 const productValidations = {
     VALIDATION_PRODUCT_ID: "Mã sản phẩm không được rỗng",
     VALIDATION_PRODUCT_NAME: "Tên sản phẩm không được rỗng",
+    VALIDATION_PRODUCT_CHIP: "Chip không được rỗng",
     VALIDATION_PRODUCT_IMG: "Link ảnh sản phẩm không được rỗng",
     VALIDATION_PRODUCT_OS: "Hệ điều hành không được rỗng",
     VALIDATION_PRODUCT_PIN: "Dung lượng pin không được rỗng",
+    VALIDATION_PRODUCT_PIN_01: "Dung lượng pin phải lớn hơn 0",
     VALIDATION_PRODUCT_SCREEN: "Thông tin màn hình không được rỗng",
     VALIDATION_PRODUCT_PRICE: "Giá không được rỗng",
+    VALIDATION_PRODUCT_PRICE_01: "Giá phải lớn hơn 0",
     VALIDATION_PRODUCT_WARRANTY: "Thời gian bảo hành không được rỗng",
 }
 

@@ -36,30 +36,6 @@ function PayPal({ isCheckout }) {
     let yyyy = today.getFullYear();
     today = yyyy + '-' + mm + '-' + dd;
 
-    const formik = useFormik({
-        enableReinitialize: true,
-        initialValues: {
-            tenkh: "",
-            diachi: "",
-            sdt: "",
-            email: ""
-        },
-        validationSchema: Yup.object({
-            tenkh: Yup.string()
-                .required(orderInfoValidations.VALIDATION_NAME),
-            diachi: Yup.string()
-                .required(orderInfoValidations.VALIDATION_ADDRESS),
-            sdt: Yup.string()
-                .min(10, orderInfoValidations.VALIDATION_PHONENUMBER_02)
-                .max(10, orderInfoValidations.VALIDATION_PHONENUMBER_02)
-                .required(orderInfoValidations.VALIDATION_PHONENUMBER_01).matches(phoneRegExp, orderInfoValidations.VALIDATION_PHONENUMBER_03),
-            email: Yup.string().email(orderInfoValidations.VALIDATION_EMAIL_01)
-                .required(orderInfoValidations.VALIDATION_EMAIL_02),
-        }),
-        onSubmit: (values) => {
-
-        }
-    })
 
     useEffect(() => {
         fetch(`${apiConfig.baseUrl}/khachhang/profile`, {
@@ -95,7 +71,7 @@ function PayPal({ isCheckout }) {
             tennguoinhan: tenkhRef.current.value.trim(),
             diachinhan: diachiRef.current.value.trim(),
             sdtnguoinhan: sdtRef.current.value.trim(),
-            eamilnguoinhan: emailRef.current.value.trim(),
+            emailnhan: emailRef.current.value.trim(),
             tongtien: localStorage.getItem("totalAmount"),
             matrangthai: 1,
             cmnd: userInfo.cmnd
@@ -189,6 +165,31 @@ function PayPal({ isCheckout }) {
         })
     }
 
+    const formik = useFormik({
+        enableReinitialize: true,
+        initialValues: {
+            tenkh: userInfo.tenkh,
+            diachi: userInfo.diachi,
+            sdt: userInfo.sdt,
+            email: userInfo.email
+        },
+        validationSchema: Yup.object({
+            tenkh: Yup.string()
+                .required(orderInfoValidations.VALIDATION_NAME),
+            diachi: Yup.string()
+                .required(orderInfoValidations.VALIDATION_ADDRESS),
+            sdt: Yup.string()
+                .min(10, orderInfoValidations.VALIDATION_PHONENUMBER_02)
+                .max(10, orderInfoValidations.VALIDATION_PHONENUMBER_02)
+                .required(orderInfoValidations.VALIDATION_PHONENUMBER_01).matches(phoneRegExp, orderInfoValidations.VALIDATION_PHONENUMBER_03),
+            email: Yup.string().email(orderInfoValidations.VALIDATION_EMAIL_01)
+                .required(orderInfoValidations.VALIDATION_EMAIL_02),
+        }),
+        onSubmit: (values) => {
+            handleSubmit()
+        }
+    })
+
     // useEffect(() => {
     //     window.paypal
     //         .Buttons({
@@ -229,18 +230,32 @@ function PayPal({ isCheckout }) {
 
     return (
         <>
+            <form onSubmit={formik.handleSubmit} autoComplete="off">
             <div className="checkout">
                 <div className="customer">
                     <div className="customer-info">
                         <div className="delivery-address">
                             <h4>Địa chỉ nhận hàng</h4>
-                            <span>Họ tên</span><input type="text" className="form-control" defaultValue={userInfo.tenkh} ref={tenkhRef} name="tenkh" />
-                            {formik.errors.tenkh ? (
+                                <span>Họ tên</span><input type="text" className="form-control" defaultValue={userInfo.tenkh} onBlur={formik.handleBlur} onChange={formik.handleChange}
+                                    ref={tenkhRef} name="tenkh" />
+                                {formik.touched.tenkh && formik.errors.tenkh ? (
                                 <div className={style["validate"]}>{formik.errors.tenkh}</div>
                             ) : null}
-                            <span>Địa chỉ</span><input type="text" className="address form-control" defaultValue={userInfo.diachi} ref={diachiRef} />
-                            <span>Số điện thoại</span><input type="text" className="phone form-control" defaultValue={userInfo.sdt} ref={sdtRef} />
-                            <span>Email</span><input type="email" className="email form-control" defaultValue={userInfo.email} ref={emailRef} />
+                                <span>Địa chỉ</span><input type="text" className="address form-control" defaultValue={userInfo.diachi} onChange={formik.handleChange}
+                                    ref={diachiRef} name="diachi" />
+                                {formik.errors.diachi ? (
+                                    <div className={style["validate"]}>{formik.errors.diachi}</div>
+                                ) : null}
+                                <span>Số điện thoại</span><input type="text" className="phone form-control" defaultValue={userInfo.sdt} onChange={formik.handleChange}
+                                    ref={sdtRef} name="sdt" />
+                                {formik.errors.sdt ? (
+                                    <div className={style["validate"]}>{formik.errors.sdt}</div>
+                                ) : null}
+                                <span>Email</span><input type="email" className="email form-control" defaultValue={userInfo.email} onChange={formik.handleChange}
+                                    ref={emailRef} name="email" />
+                                {formik.errors.email ? (
+                                    <div className={style["validate"]}>{formik.errors.email}</div>
+                                ) : null}
                         </div>
                         <div className="delivery-mode">
                             <h4>Hình thức giao hàng</h4>
@@ -295,10 +310,12 @@ function PayPal({ isCheckout }) {
                     </div>
                 </div >
                 <div className="paypal">
-                    <button type="button" className="btn btn-primary" onClick={handleSubmit}>Xác nhận đặt hàng</button>
+                        {/* <button type="button" className="btn btn-primary" onClick={handleSubmit}>Xác nhận đặt hàng</button> */}
+                        <button type="submit" className="btn btn-primary">Xác nhận đặt hàng</button>
                     {/* <div ref={paypal}></div> */}
                 </div>
             </div>
+            </form>
         </>
     )
 }
