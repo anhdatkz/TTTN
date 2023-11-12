@@ -70,6 +70,7 @@ public class DonHangController {
 		return this.donhangService.listAll();
 	}
 	
+//	Tạo đơn hàng
 	@PostMapping("/donhang")
 	public Integer savedonhang(@RequestBody DonHangRequest donHangRequest){
 		DonHang donhang = new DonHang();
@@ -122,6 +123,7 @@ public class DonHangController {
 		
 	}
 	
+//	lấy danh sách đơn hàng của khách hàng
 	@GetMapping("/donhang/kh")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public List<DonHang> getdonhangKH(){
@@ -148,6 +150,7 @@ public class DonHangController {
 		}
 	}
 
+//	lấy danh sách đơn hàng nhân viên giao
 	@GetMapping("/donhang/nv/{manv}")
 	public List<DonHang> getdonhangByMaNVG(@PathVariable String manv){
 		try {
@@ -171,6 +174,7 @@ public class DonHangController {
 		}
 	}
 	
+//	Tính tổng giá trị các đơn hàng đã giao trong khoảng thời gian
 	@GetMapping("/donhang/{ngaybd}/{ngaykt}")
 	public List<DonHang> getDonHangTheoNgay(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date ngaybd, 
 			@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date ngaykt) {
@@ -182,6 +186,7 @@ public class DonHangController {
 			return (List<DonHang>) new ResponseEntity<List<DonHang>>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
 //	Cap nhat trang thai don hang
 	@PutMapping("/donhang")
 	public ResponseEntity<ApiResponse> updateTrangThaiDH(@RequestBody TrangThaiRequest trangThaiRequest){
@@ -240,6 +245,7 @@ public class DonHangController {
 			donHangRespose.setTennguoinhan(donhang.getTennguoinhan());
 			donHangRespose.setTongtien(donhang.getTongtien());
 			
+//			cập nhật lại số lượng sản phẩm cho đơn hàng
 			List<CTDH> ctdhs = ctdhService.getCTDHByIdDH(id);
 			for(CTDH ctdh : ctdhs){
 				LoaiSanPham loaiSanPham = loaiSanPhamService.getLoaiSanPhamById(ctdh.getId().getMaloaictdh());

@@ -117,12 +117,15 @@ public class LoaiSanPhamController {
 		List<DotGiamGia> dotGiamGiaActive = new ArrayList<DotGiamGia>();
 		Date toDay = new Date();
 		
+		//danh sách đợt giảm giá có hiệu lực 
 		for(DotGiamGia dgg : dotGiamGias){
-			if(toDay.after(dgg.getNgaybd()) && toDay.before(dgg.getNgaykt())) {
+			if((toDay.after(dgg.getNgaybd())|| toDay.equals(dgg.getNgaybd())) 
+					&& (toDay.before(dgg.getNgaykt()) || toDay.equals(dgg.getNgaykt()))) {
 				dotGiamGiaActive.add(dgg);
 			}
 		}
 		
+		// danh sách các sản phẩm nằm trong đợt giảm giá
 		for(DotGiamGia dgg : dotGiamGiaActive){
 			List<CTGiamGia> ctdggs = new ArrayList<CTGiamGia>();
 			ctdggs = dgg.getCtGiamGiasDGG();
@@ -159,6 +162,7 @@ public class LoaiSanPhamController {
 		LinkedHashMap<String, Integer> sortedMap = new LinkedHashMap<>();
         ArrayList<Integer> list = new ArrayList<>();
         
+        //tính số lượng bán được của từng loại sản phẩm trong các đơn hàng có trạng thái đã giao
         for(LoaiSanPham lsp : alllsp){
 			Integer soluong = 0;
 			for(CTDH ctdh : ctdhs){
@@ -187,6 +191,7 @@ public class LoaiSanPhamController {
             list.add(entry.getValue());
         }
 		
+		//Sắp xếp giảm dần theo số lượng bán được
 		Collections.sort(list);
         Collections.reverse(list);
         for (int num : list) {
@@ -197,6 +202,7 @@ public class LoaiSanPhamController {
             }
         }
 		
+        //Lấy sản phẩm bán được có số lượng lớn hơn 0
 		Set<String> setLSP = sortedMap.keySet();
         for (String key : setLSP) {
         	if(mapLSP.get(key) > 0){
