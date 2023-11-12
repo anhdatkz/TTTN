@@ -67,20 +67,21 @@ export default function ModalAdminOrder(props) {
                     toast.success(data.message, {
                         position: "top-center"
                     })
+                    hide()
                 }
                 else {
                     toast.warn(data.message, {
                         position: "top-center"
                     })
                 }
-                hide()
+                // hide()
             })
             .catch((error) => {
                 toast.error("Thất bại, Xin kiểm tra lại", {
                     position: "top-center"
                 })
                 console.error('Error:', error);
-                hide()
+                // hide()
             });
     }
 

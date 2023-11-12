@@ -74,13 +74,14 @@ export default function ModalReceivedNote(props) {
                         toast.success(data.message, {
                             position: "top-center"
                         })
+                        hide()
                     }
                     else {
                         toast.warn(data.message, {
                             position: "top-center"
                         })
                     }
-                    hide()
+                    // hide()
                 })
                 .catch((error) => {
                     toast.error("Tạo đơn đặt hàng thất bại", {

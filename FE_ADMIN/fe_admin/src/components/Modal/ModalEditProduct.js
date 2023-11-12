@@ -7,6 +7,7 @@ import * as Yup from "yup"
 import style from "./Modal.module.css"
 import { scrollTop, username } from "../../App";
 import { productValidations } from "../../ultils/ValidationMessages";
+import { getDate } from "../../ultils/Format";
 
 function ModalEditProduct(props) {
     const { hide, action, maloai } = props
@@ -311,9 +312,9 @@ function ModalEditProduct(props) {
                                         <label htmlFor="">Ra mắt</label>
                                         {action === "edit"
                                             ? (<input name="ramat" type="date" className="form-control" defaultValue={lsp.ramat} onChange={formik.handleChange}
-                                                onBlur={formik.handleBlur} ref={ramatRef} readOnly />)
+                                                onBlur={formik.handleBlur} ref={ramatRef} max={getDate()} />)
                                             : (<input name="ramat" type="text" className="form-control" defaultValue={lsp.ramat} onChange={formik.handleChange}
-                                                onBlur={formik.handleBlur} ref={ramatRef} readOnly />)}
+                                                onBlur={formik.handleBlur} ref={ramatRef} max={getDate()} readOnly />)}
                                         {/* <input name="ramat" type="date" className="form-control" defaultValue={lsp.ramat} onChange={formik.handleChange}
                                             onBlur={formik.handleBlur} ref={ramatRef} /> */}
                                     </div>
